@@ -1,6 +1,9 @@
 from flask import Blueprint, request, jsonify
-import json
+import json, uuid
 from utils.validators import valid_mobile, valid_email, valid_pass
+from models import Auth
+from extension import db
+from utils.password import hash_password, verify_password
 auth_bp=Blueprint('auth',__name__,url_prefix="/api/v1")
 
 @auth_bp.route("/signup",methods=["POST"])
@@ -26,7 +29,26 @@ def signup():
 
  if len(f_name) < 3 or len(l_name) < 3:
    return "first name and last name should be more than 2 characters"
- return "signup"
+
+ user=Auth.query.filter_by(email=email).first()
+ if user:
+  return "email is already registered"
+ id=str(uuid.uuid4())
+ user=Auth(
+  id=id[:15],
+  f_name=f_name,
+  l_name=l_name,
+  mobile=mobile,
+  email=email,
+  password=hash_password(password)
+ )
+ try:
+  db.session.add(user)
+  db.session.commit()
+  return "Account created successfully"
+ except Exception as e:
+  return "something went wrong during signup"
+
 
 @auth_bp.route("/login",methods=["POST"])
 def login():
@@ -43,7 +65,13 @@ def login():
  if not valid_pass(password):
    return "invalid password"
 
- return "login"
+ user=Auth.query.filter_by(email=email).first()
+ if not user:
+  return "invalid email or password"
+ elif not verify_password(password, user.password):
+  return "invalid email or password"
+
+ return "logged in"
 
 @auth_bp.route("/state",methods=["GET"])
 def state():

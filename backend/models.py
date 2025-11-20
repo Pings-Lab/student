@@ -10,6 +10,6 @@ class Auth(db.Model):
   mobile=db.Column(db.String(10))
   email=db.Column(db.String(60))
   password=db.Column(db.String(200))
-  created=db.Column(db.Timezone)
+  created=db.Column(db.TIMESTAMP)
   def __repr__(self):
         return f'<Auth {self.id}>'
