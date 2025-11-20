@@ -2,11 +2,13 @@ import os
 from flask import Flask
 from dotenv import load_dotenv
 from routes.auth import auth_bp
+from routes.profile import profile_bp
 
 load_dotenv()
 app=Flask(__name__)
 
 app.register_blueprint(auth_bp)
+app.register_blueprint(profile_bp)
 
 if __name__=="__main__":
    host=os.getenv("HOST")
