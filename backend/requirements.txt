@@ -6,3 +6,4 @@ psycopg2-binary
 uuid
 flask-bcrypt
 flask_jwt_extended
+requests
