@@ -1,11 +1,14 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, make_response
 import json, uuid
 from utils.validators import valid_mobile, valid_email, valid_pass
 from models import Auth
 from extension import db
 from utils.password import hash_password, verify_password
+from flask_jwt_extended import create_access_token, set_access_cookies, jwt_required, get_jwt_identity
+
 auth_bp=Blueprint('auth',__name__,url_prefix="/api/v1")
 
+#signup code block
 @auth_bp.route("/signup",methods=["POST"])
 def signup():
  try:
@@ -16,23 +19,23 @@ def signup():
   f_name=data["f_name"].strip()
   l_name=data["l_name"].strip()
  except Exception as e:
-   return "missing input values"
+   return jsonify({"success": False, "message": "missing input values"}), 400
 
  if not valid_mobile(mobile):
-   return "invalid mobile format"
+   return jsonify({"success": False, "message": "invalid mobile format"}), 400
 
  if not valid_email(email):
-   return "Invalid email format"
+   return jsonify({"success": False, "message": "invalid email format"}), 400
 
  if not valid_pass(password):
-   return "invalid password"
+   return jsonify({"success": False, "message": "invalid password format"}), 400
 
  if len(f_name) < 3 or len(l_name) < 3:
-   return "first name and last name should be more than 2 characters"
+   return jsonify({"success": False, "message": "first name and last name should be more than 2 characters"}), 400
 
  user=Auth.query.filter_by(email=email).first()
  if user:
-  return "email is already registered"
+  return jsonify({"success": False, "message": "email is already registered"}), 400
  id=str(uuid.uuid4())
  user=Auth(
   id=id[:15],
@@ -45,11 +48,12 @@ def signup():
  try:
   db.session.add(user)
   db.session.commit()
-  return "Account created successfully"
+  return jsonify({"success": False, "message": "account created successfully"}), 201
  except Exception as e:
-  return "something went wrong during signup"
+  return jsonify({"success": False, "message": "something went wrong during signup"}), 500
 
 
+#login code block
 @auth_bp.route("/login",methods=["POST"])
 def login():
  try:
@@ -57,26 +61,36 @@ def login():
   email=data["email"]
   password=data["password"]
  except Exception as e:
-   return "missing input values"
+   return jsonify({"success": False, "message": "missing input values"}), 400
 
  if not valid_email(email):
-   return "Invalid email format"
+   return jsonify({"success": False, "message": "invalid email format"}), 400
 
  if not valid_pass(password):
-   return "invalid password"
+   return jsonify({"success": False, "message": "invalid password format"}), 400
 
  user=Auth.query.filter_by(email=email).first()
  if not user:
-  return "invalid email or password"
+  return jsonify({"success": False, "message": "incorrect email or password"}), 400
  elif not verify_password(password, user.password):
-  return "invalid email or password"
+  return jsonify({"success": False, "message": "incorrect email or password"}), 400
 
- return "logged in"
+ data=json.dumps({"id":user.id})
+ access_token = create_access_token(data)
+ response = make_response(jsonify({"success":True,"message": "Login successful"}), 200)
 
+ set_access_cookies(response, access_token)
+ return response
+
+#login state API
 @auth_bp.route("/state",methods=["GET"])
+@jwt_required()
 def state():
- return "logged in"
+ token=get_jwt_identity()
+ token=json.loads(token)
+ return jsonify({"success": True, "message": token["id"]}), 400
 
+#forgot password flow
 @auth_bp.route("/forgot",methods=["POST"])
 def forgot():
  try:
