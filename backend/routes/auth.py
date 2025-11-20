@@ -88,7 +88,10 @@ def login():
 def state():
  token=get_jwt_identity()
  token=json.loads(token)
- return jsonify({"success": True, "message": token["id"]}), 400
+ user = Auth.query.get(token["id"])
+ if not user:
+  return jsonify({"success": False, "message": "unauthorized access"}), 401
+ return jsonify({"success": True, "message": "logged in"}), 200
 
 #forgot password flow
 @auth_bp.route("/forgot",methods=["POST"])
@@ -98,13 +101,16 @@ def forgot():
   email=data["email"]
   mobile=data["mobile"]
  except Exception as e:
-   return "missing input values"
+   return jsonify({"success": False, "message": "missing input values"}), 400
 
  if not valid_email(email):
-   return "Invalid email format"
+   return jsonify({"success": False, "message": "invalid email format"}), 400
 
  if not valid_mobile(mobile):
-   return "invalid mobile format"
+   return jsonify({"success": False, "message": "invalid mobile format"}), 400
 
- return "email sent"
+ user = Auth.query.filter_by(email=email, mobile=mobile).first()
+ if not user:
+  return jsonify({"success": False, "message": "account not found"}), 400
+ return jsonify({"success": True, "message": "recovery email sent"}), 200
 

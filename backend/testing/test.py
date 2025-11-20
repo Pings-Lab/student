@@ -24,3 +24,25 @@ response = session.get(url+"state")
 print("result: "+response.text+" "+str(response.status_code))
 
 print("\n-----------------------------------\n")
+
+# Forgot password
+print("1. Forgot password API\n")
+payload ={
+   "email": "ken@gmail.com",
+   "mobile": "1234567890"
+}
+response = session.post(url+"forgot", json=payload)
+print("result: "+response.text+" "+str(response.status_code))
+
+print("\n-----------------------------------\n")
+
+# change password
+print("1. Change password API\n")
+payload ={
+   "current_pass": "1234@abC",
+   "new_pass": "Abcd@123"
+}
+response = session.post(url+"/profile/password", json=payload)
+print("result: "+response.text+" "+str(response.status_code))
+
+print("\n-----------------------------------\n")
