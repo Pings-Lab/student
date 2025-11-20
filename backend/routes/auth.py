@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify, make_response
 import json, uuid
 from utils.validators import valid_mobile, valid_email, valid_pass
-from models import Auth
+from models import Auth, Profile
 from extension import db
 from utils.password import hash_password, verify_password
 from flask_jwt_extended import create_access_token, set_access_cookies, jwt_required, get_jwt_identity
@@ -45,10 +45,21 @@ def signup():
   email=email,
   password=hash_password(password)
  )
+
+ profile=Profile(
+  id=id[:15],
+  username=email,
+  gender="m",
+  country="India",
+  pin="582102",
+  edu="g",
+  dob="2000-01-01"
+ )
  try:
   db.session.add(user)
+  db.session.add(profile)
   db.session.commit()
-  return jsonify({"success": False, "message": "account created successfully"}), 201
+  return jsonify({"success": True, "message": "account created successfully"}), 201
  except Exception as e:
   return jsonify({"success": False, "message": "something went wrong during signup"}), 500
 

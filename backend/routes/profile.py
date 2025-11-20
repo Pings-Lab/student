@@ -2,21 +2,42 @@ from flask import Blueprint, request, jsonify
 from utils.validators import valid_pass
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from extension import db
-from models import Auth
+from models import Auth, Profile
 from utils.password import hash_password, verify_password
 import json
 
 profile_bp = Blueprint('profile',__name__,url_prefix="/api/v1/profile")
 
 @profile_bp.route("/username", methods=["POST"])
+@jwt_required()
 def username():
+ token=get_jwt_identity()
+ token=json.loads(token)
+
+ profile=Profile.query.get(token["id"])
+ if not profile:
+  return jsonify({"success": False, "message": "unauthorized access"}), 401
  try:
   data=request.json
-  name=data["username"]
+  name=data["username"].strip()
  except Exception as e:
-  return "missing parameters"
+  return jsonify({"success": False, "message": "missing input parameters"}), 400
 
- return "username changed"
+ if len(name) < 3 or len(name) >20:
+   return jsonify({"success": False, "message": "username should be less than 20 chars and more than 3 chars."}), 400
+
+ if profile.username == name:
+   return jsonify({"success": False, "message": "this is your current username"}), 400
+ names=Profile.query.filter_by(username=name).first()
+ if names:
+  return jsonify({"success": False, "message": "username is already taken"}), 400
+
+ try:
+  profile.username = name
+  db.session.commit()
+  return jsonify({"success": True, "message": "username changed"}), 200
+ except Exception as e:
+  return jsonify({"success": False, "message": "something went wrong"}), 400
 
 @profile_bp.route("/password", methods=["POST"])
 @jwt_required()

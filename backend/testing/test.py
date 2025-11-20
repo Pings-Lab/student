@@ -46,3 +46,15 @@ response = session.post(url+"/profile/password", json=payload)
 print("result: "+response.text+" "+str(response.status_code))
 
 print("\n-----------------------------------\n")
+
+# Change username
+print("1. Change username API\n")
+payload ={
+   "username": "ken",
+}
+response = session.post(url+"/profile/username", json=payload)
+print("result: "+response.text+" "+str(response.status_code))
+
+print("\n-----------------------------------\n")
+
+
