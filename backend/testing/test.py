@@ -8,7 +8,7 @@ print("\n------------API testing------------\n")
 print("1. Login API\n")
 payload = {
     "email": "ken@gmail.com",
-    "password": "1234@abC"
+    "password": "Abcd@123"
 }
 
 response = session.post(url+"login", json=payload)
@@ -58,3 +58,15 @@ print("result: "+response.text+" "+str(response.status_code))
 print("\n-----------------------------------\n")
 
 
+# profile info
+print("1. Update profile info API\n")
+payload ={
+   "edu": "VTU Belagavi",
+   "pin": "582102",
+   "dob": "03-12-2003",
+   "gender": "m"
+}
+response = session.post(url+"/profile/info", json=payload)
+print("result: "+response.text+" "+str(response.status_code))
+
+print("\n-----------------------------------\n")

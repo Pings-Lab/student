@@ -27,7 +27,7 @@ class Profile(db.Model):
   gender=db.Column(db.String(1))
   country=db.Column(db.String(20))
   pin=db.Column(db.String(6))
-  edu=db.Column(db.String(1))
+  edu=db.Column(db.String(60))
   dob=db.Column(db.Date)
   def __repr__(self):
         return f'<Auth {self.id}>'
