@@ -109,6 +109,21 @@ def list_interns():
 
  print("\n-----------------------------------\n")
 
+# Apply internships
+def apply_intern():
+ print("11. Apply internships API\n")
+ cid=input("Domain: ")
+ stack=input("Stack: ")
+ due=int(input("Months: "))
+ payload={
+ "domain":cid,
+ "stack":stack,
+ "months":due
+ }
+ response = session.post(url+"/internship/apply", json=payload)
+ print("result: "+response.text+" "+str(response.status_code))
+
+ print("\n-----------------------------------\n")
 def main():
  print("1.Login 2.State 3.Forgot 4.Change_pass 5.Chnage_name 6.info 7.dom_list 8.Send OTP 9.Verify Account 10. List internships")
  while(1==1):
@@ -140,6 +155,8 @@ def main():
    verify()
   elif choice == 10:
    list_interns()
+  elif choice == 11:
+   apply_intern()
   else:
    return 0
 

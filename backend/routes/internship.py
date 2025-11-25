@@ -1,7 +1,8 @@
-from flask import jsonify, Blueprint
+from flask import jsonify, Blueprint, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
-import json
+import json, uuid
 from models import Profile, Internship, Domains
+from extension import db
 intern_bp=Blueprint("intern",__name__,url_prefix="/api/v1/internship")
 
 @intern_bp.route("/list",methods=["GET"])
@@ -24,3 +25,53 @@ def view_applied():
   output.append(a)
 
  return jsonify({"success": True, "message": "internships", "list": output}), 200
+
+
+@intern_bp.route("/apply",methods=["POST"])
+@jwt_required()
+def apply_intern():
+ id=json.loads(get_jwt_identity())
+ id=id["id"]
+ profile=Profile.query.get(id)
+ if not profile:
+  return jsonify({"success": False, "msg":"unauthorized access"}), 401
+
+ try:
+  data=request.json
+  cid=data["domain"].strip()
+  stack=data["stack"].strip()
+  duration=int(data["months"])
+ except Exception as e:
+  return jsonify({"success": False, "msg":f"missing input parameters {e}"}), 401
+
+ interns=Internship.query.filter_by(uid=id).all()
+
+ if interns:
+  for i in interns:
+   if cid==i.cid and  stack==i.stack:
+     return jsonify({"success": False, "msg":"you have already enrolled for this internship"}), 401
+
+ domain=Domains.query.get(cid)
+ if not domain:
+  return jsonify({"success": False, "msg":"invalid internship name"}), 401
+
+ stacks=domain.stack
+ if stack not in stacks.values():
+  return jsonify({"success": False, "msg":"invalid internship name"}), 401
+ if duration > 6 or duration < 1:
+  return jsonify({"success": False, "msg":"invalid internship duration"}), 401
+ iid=str(uuid.uuid4())
+ new=Internship(
+  iid=iid[:25],
+  cid=cid,
+  uid=id,
+  stack=stack,
+  duration=duration
+ )
+
+ try:
+  db.session.add(new)
+  db.session.commit()
+  return jsonify({"success": True, "msg":"applied to internship successfully"}), 201
+ except Exception as e:
+  return jsonify({"success": False, "message": f"something went wrong {e}"}), 500
