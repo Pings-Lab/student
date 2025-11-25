@@ -9,6 +9,7 @@ from datetime import datetime
 
 profile_bp = Blueprint('profile',__name__,url_prefix="/api/v1/profile")
 
+# Username change API
 @profile_bp.route("/username", methods=["POST"])
 @jwt_required()
 def username():
@@ -17,29 +18,30 @@ def username():
 
  profile=Profile.query.get(token["id"])
  if not profile:
-  return jsonify({"success": False, "message": "unauthorized access"}), 401
+  return jsonify({"success": False, "msg": "unauthorized access"}), 401
  try:
   data=request.json
   name=data["username"].strip()
  except Exception as e:
-  return jsonify({"success": False, "message": "missing input parameters"}), 400
+  return jsonify({"success": False, "msg": "missing input parameters"}), 400
 
  if len(name) < 3 or len(name) >20:
-   return jsonify({"success": False, "message": "username should be less than 20 chars and more than 3 chars."}), 400
+   return jsonify({"success": False, "msg": "username should be less than 20 chars and more than 3 chars."}), 400
 
  if profile.username == name:
-   return jsonify({"success": False, "message": "this is your current username"}), 400
+   return jsonify({"success": False, "msg": "this is your current username"}), 400
  names=Profile.query.filter_by(username=name).first()
  if names:
-  return jsonify({"success": False, "message": "username is already taken"}), 400
+  return jsonify({"success": False, "msg": "username is already taken"}), 400
 
  try:
   profile.username = name
   db.session.commit()
-  return jsonify({"success": True, "message": "username changed"}), 200
+  return jsonify({"success": True, "msg": "username changed"}), 200
  except Exception as e:
-  return jsonify({"success": False, "message": "something went wrong"}), 400
+  return jsonify({"success": False, "msg": "something went wrong"}), 400
 
+# Password change API
 @profile_bp.route("/password", methods=["POST"])
 @jwt_required()
 def password():
@@ -49,31 +51,31 @@ def password():
 
  user = Auth.query.get(id)
  if not user:
-  return jsonify({"success": False, "message": "unauthorized access"}), 401
+  return jsonify({"success": False, "msg": "unauthorized access"}), 401
  try:
   data=request.json
   old_pass=data["current_pass"].strip()
   new_pass=data["new_pass"].strip()
  except Exception as e:
-  return jsonify({"success": False, "message": "missing parameters"}), 400
+  return jsonify({"success": False, "msg": "missing parameters"}), 400
 
  if not valid_pass(new_pass):
-  return jsonify({"success": False, "message": "weak password"}), 400
+  return jsonify({"success": False, "msg": "weak password"}), 400
 
  if not verify_password(old_pass, user.password):
-  return jsonify({"success": False, "message": "incorrect password"}), 400
+  return jsonify({"success": False, "msg": "incorrect password"}), 400
 
  if old_pass==new_pass:
-  return jsonify({"success": False, "message": "new password cannot old password"}), 400
+  return jsonify({"success": False, "msg": "new password cannot old password"}), 400
 
  try:
   user.password = hash_password(new_pass)
   db.session.commit()
-  return jsonify({"success": True, "message": "password changed"}), 200
+  return jsonify({"success": True, "msg": "password changed"}), 200
  except Exception as e:
-  return jsonify({"success": False, "message": "something went wrong"}), 500
+  return jsonify({"success": False, "msg": "something went wrong"}), 500
 
-
+# Info change API
 @profile_bp.route("/info", methods=["POST"])
 @jwt_required()
 def info():
@@ -83,7 +85,7 @@ def info():
 
  user = Auth.query.get(id)
  if not user:
-  return jsonify({"success": False, "message": "unauthorized access"}), 401
+  return jsonify({"success": False, "msg": "unauthorized access"}), 401
  try:
   data=request.json
   edu=data["edu"].strip()
@@ -91,28 +93,28 @@ def info():
   dob=data["dob"].strip()
   gender=data["gender"].strip()
  except Exception as e:
-  return jsonify({"success": False, "message": "missing parameters"}), 400
+  return jsonify({"success": False, "msg": "missing parameters"}), 400
 
  try:
     dob_date = datetime.strptime(dob, "%d-%m-%Y")
  except ValueError:
-    return jsonify({"success": False, "message": "invalid date format"}), 400
+    return jsonify({"success": False, "msg": "invalid date format"}), 400
 
  min_date = datetime.strptime("01-01-1995", "%d-%m-%Y")
  max_date = datetime.strptime("01-01-2007", "%d-%m-%Y")
 
  if len(edu) < 10 or len(edu) > 60:
-  return jsonify({"success": False, "message": "invalid university name"}), 400
+  return jsonify({"success": False, "msg": "invalid university name"}), 400
 
  if len(pin) != 6:
-  return jsonify({"success": False, "message": "invalid pin"}), 400
+  return jsonify({"success": False, "msg": "invalid pin"}), 400
 
  if not (min_date <= dob_date <= max_date):
-  return jsonify({"success": False, "message": "you are not eligible for this internship"}), 400
+  return jsonify({"success": False, "msg": "you are not eligible for this internship"}), 400
 
- gen="mft"
+ gen="mftl"
  if gender not in gen:
-  return jsonify({"success": False, "message": "invalid gender identity"}), 400
+  return jsonify({"success": False, "msg": "invalid gender identity"}), 400
  try:
   profile=Profile.query.get(id)
   profile.edu = edu
@@ -120,6 +122,40 @@ def info():
   profile.dob = dob_date
   profile.gender = gender
   db.session.commit()
-  return jsonify({"success": True, "message": "profile updated"}), 201
+  return jsonify({"success": True, "msg": "profile updated"}), 201
  except Exception as e:
-  return jsonify({"success": False, "message": "something went wrong"}), 400
+  return jsonify({"success": False, "msg": "something went wrong"}), 400
+
+
+@profile_bp.route("/verify", methods=["GET"])
+@jwt_required()
+def send_otp():
+ id=json.loads(get_jwt_identity())
+ id=id["id"]
+
+ profile = Profile.query.get(id)
+ if not profile:
+  return jsonify({"success": False, "msg": "unauthorized access"}), 401
+
+ if profile.verified == True:
+  return jsonify({"success": True, "msg": "profile already verified"}), 200
+
+ return jsonify({"success":True, "msg":"otp sent"}), 200
+
+
+@profile_bp.route("/verify", methods=["POST"])
+@jwt_required()
+def verify():
+ id=json.loads(get_jwt_identity())
+ id=id["id"]
+
+ profile = Profile.query.get(id)
+ if not profile:
+  return jsonify({"success": False, "msg": "unauthorized access"}), 401
+
+ if profile.verified == True:
+  return jsonify({"success": True, "msg": "profile already verified"}), 200
+
+ profile.verified = True
+ db.session.commit()
+ return jsonify({"success":True, "msg":"account verified"}), 200
