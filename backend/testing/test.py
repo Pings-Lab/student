@@ -101,8 +101,16 @@ def verify():
 
  print("\n-----------------------------------\n")
 
+# List internships
+def list_interns():
+ print("10. List internships API\n")
+ response = session.get(url+"/internship/list")
+ print("result: "+response.text+" "+str(response.status_code))
+
+ print("\n-----------------------------------\n")
+
 def main():
- print("1.Login 2.State 3.Forgot 4.Change_pass 5.Chnage_name 6.info 7.dom_list")
+ print("1.Login 2.State 3.Forgot 4.Change_pass 5.Chnage_name 6.info 7.dom_list 8.Send OTP 9.Verify Account 10. List internships")
  while(1==1):
   choice=0
   try:
@@ -130,6 +138,8 @@ def main():
    send_otp()
   elif choice == 9:
    verify()
+  elif choice == 10:
+   list_interns()
   else:
    return 0
 

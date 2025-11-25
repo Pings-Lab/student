@@ -44,3 +44,19 @@ class Domains(db.Model):
 
     def __repr__(self):
         return f"<Domains {self.name}"
+
+class Internship(db.Model):
+   __tablename__ = 'internships'
+   iid = db.Column(db.String(25), primary_key=True)
+   uid = db.Column(db.String(15), db.ForeignKey('auth.id'))
+   cid = db.Column(db.String(5), db.ForeignKey('domains.id'))
+   stack = db.Column(db.String(30))
+   duration = db.Column(db.Integer)
+   register_date = db.Column(
+        db.TIMESTAMP(timezone=True),
+        server_default=func.now()
+    )
+   paid = db.Column(db.Boolean, default=False)
+   status = db.Column(db.String(10), default='applied')
+   def __repr__(self):
+        return f"<Internship {self.iid}"
