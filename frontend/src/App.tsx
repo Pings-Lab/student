@@ -4,6 +4,7 @@ import resource from './assets/resource.png'
 import tools from './assets/tools.png'
 import projects from './assets/projects.png'
 import avatar from './assets/avatar.png'
+import { Link } from 'react-router-dom'
 
 const App = () => {
   return (
@@ -15,8 +16,7 @@ const App = () => {
           <p>Learn, Practice, Collab with group and more.</p>
           <div>
             <a href="#">Explore</a>
-          <a href="#">Join</a>
-          <a href="#">Login</a>
+          <Link to="/auth">Join</Link>
           </div>
           </div>
            <div id='page1-img' >
@@ -132,8 +132,7 @@ const App = () => {
           <p>Contact us for queries</p>
           <div>
             <a href="#">Explore</a>
-          <a href="#">Join</a>
-          <a href="#">Login</a>
+          <Link to="/auth">Join</Link>
           </div>
           </div>
            <div id='page1-img' >
