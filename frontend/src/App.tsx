@@ -1,4 +1,4 @@
-import React from 'react'
+
 import './App.css'
 import resource from './assets/resource.png'
 import tools from './assets/tools.png'
