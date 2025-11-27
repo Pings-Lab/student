@@ -1,0 +1,325 @@
+#body{
+    /* background-color: #f5fdff; */
+    background-color: black;
+    font-family: 'Inter', sans-serif;
+    width: 100vw;
+    height: auto;
+}
+
+#page1, #page2, #page3{
+    font-family: 'Inter', sans-serif;
+    width: 80vw;
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 60% 40%;
+    margin: 0 auto;
+}
+
+
+#page2{
+grid-template-rows: 1fr 3fr 3fr;
+}
+#page3{
+grid-template-rows: 1fr 6fr;
+}
+#page1-top{
+    
+    font-family: 'Inter', sans-serif;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    font-size: calc(2.5vh + 2.5vw);
+    overflow: hidden;
+    font-weight: 900;
+    /* color: rgb(31, 31, 32, 0.6); */
+    color: rgba(195, 198, 199, 0.6);
+  
+  
+}
+#page1-text{
+    
+    height: 100%;
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    text-wrap: balance;
+}
+#page1-text p{
+    font-size: calc(1vh + 1vw);
+    font-weight: 600;
+    color: rgba(12, 176, 241, 0.6);
+    text-align: left;
+}
+
+#page1-text a{
+    text-decoration: none;
+    font-size: calc(0.8vh + 0.8vw);
+    display: inline-block;
+    padding: 4px;
+    padding-left: 12px;
+    padding-right: 12px;
+    box-shadow: 0px 0px 3px 0px rgb(255, 255, 255);
+    border-radius: 5px;
+    margin-left: 1vw;
+    margin-right: 1vw;
+    background-image: linear-gradient(37deg,blue,rgb(247, 91, 247));
+    
+    color: transparent;
+    background-clip: text;
+}
+
+#page1-text a:hover{
+    scale: 1.1;
+    color: rgb(255, 255, 255);
+    background-clip: unset;
+    transition: 300ms;
+}
+
+#page1-bottom, #page2-bottom{
+    
+    width: 100%;
+    height: 100%;
+}
+
+#page1-img{
+    width: 40%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#page1-img img{
+    width: 100%;
+    height: 100%;
+}
+
+
+
+@media  screen and (max-width: 420px) {
+    #page1{
+        width: 100vw;
+        grid-template-rows: 2fr 1fr;
+        grid-template-columns: 100%;
+    }
+    #page1-top{
+        flex-direction: column;
+        height: 100%;
+    }
+    #page1-text{
+        width: 100%;
+        height: 50%;
+    }
+    #page1-img{
+        width: 100%;
+        height: 50%;
+    }
+    #page1-img img{
+        width: auto;
+        height: 100%;
+    }
+    
+    #page1-text a{
+        font-size: calc(1.5vh + 1.5vw);
+        margin-left: 2.5vw;
+    margin-right: 2.5vw;
+    margin-top: 10%;
+    }
+}
+
+
+/* second page design */
+#page2-top{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    font-size: calc(2.5vh + 2.5vw);
+    overflow: hidden;
+    font-weight: 900;
+    
+}
+
+#page2-top .box{
+    box-shadow: 0px 0px 5px 0px rgb(255, 255, 255);
+    border-radius: 10px;
+    width: 25%;
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    text-wrap: balance;
+    font-size: calc(1vh + 1vw);
+    font-weight: 600;
+    color: rgba(12, 176, 241, 0.6);
+    text-align: left;
+    cursor: pointer;
+}
+
+#page2-top .box:hover, #page2-bottom .box:hover{
+    box-shadow: 0px 0px 15px 1px rgb(10, 241, 229);
+    transition: 300ms
+}
+
+#page2-top .box img{
+    width: 60%;
+    height: 60%;
+    margin-bottom: 1vh;
+}
+.pagehead{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(2.5vh + 2.5vw);
+    overflow: hidden;
+    font-weight: 900;
+    color: rgba(195, 198, 199, 0.6);
+}   
+#page2-bottom h1{
+    width: fit-content;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(2vh + 2vw);
+    overflow: hidden;
+    font-weight: 900;
+color:rgba(195, 198, 199, 0.6);
+ text-shadow: 0 0 10px rgba(0, 191, 255, 0.7);
+}
+
+#page2-bottom .box{
+    box-shadow: 0px 0px 5px 0px rgb(255, 255, 255);
+    border-radius: 10px;
+    width: 15%;
+    height: 40%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    text-wrap: balance;
+    font-size: calc(1vh + 1vw);
+    font-weight: 600;
+    color: rgba(12, 176, 241, 0.6);
+    text-align: left;
+    cursor: pointer;
+    margin: 2vh 2vw;
+}
+#page2-bottom .box img{
+    width: 60%;
+    height: 60%;
+    margin-bottom: 1vh;
+}
+@media screen and (max-width: 420px) {
+    #page2-top{
+        flex-direction: column;
+        height: 100%;
+    }
+    #page2-top .box{
+        width: 90%;
+        height: 25%;
+        flex-direction: row;
+           justify-content: space-evenly;
+           font-size: calc(1.2vh + 1.2vw);
+    }
+    #page2-top .box img{
+    width: 40%;
+    height: 90%;
+     margin: 0px 0px;
+    }
+    #page2-bottom .box{
+        display: inline-flex;
+        width: 40%;
+    height: 20%;
+     margin: 1vh 5%; 
+    }
+   
+}
+
+/* page 3 design */
+#page3-con{
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    overflow: hidden;
+}
+#page3-con .box{
+    box-shadow: 0px 0px 5px 0px rgb(255, 255, 255);
+    border-radius: 10px;
+    width: 60%;
+    height: 90%;
+    margin: 5% auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    text-wrap: balance;
+    text-align: left;
+    cursor: pointer;
+    display: grid;
+    grid-template-rows: 30% 70%;
+    overflow: hidden;
+}
+#page3-con .box img{
+   margin: 0 auto;
+    height: 100%;
+    margin-bottom: 1vh;
+}
+#page3-con .box:hover{
+    box-shadow: 0px 0px 15px 1px rgb(10, 241, 229);
+    transition: 300ms
+}
+
+
+#page3-con .box .text{
+    text-align: center;
+    text-wrap: balance;
+    padding-left: 10%;
+    padding-right: 10%;
+    color: aliceblue;
+    font-size: calc(0.8vh + 0.8vw );
+}
+#page3-con .box .text p{
+    color: rgba(12, 176, 241, 0.6);
+    text-align: center;
+    font-size: calc(1vh + 1vw);
+    font-weight: 600;
+    margin-bottom: 10%;
+}
+
+@media screen and (max-width: 420px) {
+    #page3-con{
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr;
+    }
+    #page3-con .box{
+        width: 80%;
+        height: 80%;
+        margin: 10% auto;
+    }
+    #page3-con .box .text{
+        font-size: calc(1vh + 1vw );
+    }
+    #page3-con .box .text p{
+        font-size: calc(1vh + 1vw );
+    }
+}
+
+#footer{
+    height: 100%;
+    width: 100%;
+    background-color: rgb(34, 33, 33);
+}
