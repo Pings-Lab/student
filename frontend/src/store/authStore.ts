@@ -15,7 +15,7 @@ interface AuthState {
   logout: () => void;
 }
 
-export const useAuth = create<AuthState>()(
+const useAuth = create<AuthState>()(
   persist(
     (set, get) => ({
       email: "",
@@ -43,12 +43,19 @@ export const useAuth = create<AuthState>()(
         } catch (err: any) {
           set({
             loading: false,
-            message: err.response?.data?.message || "Login failed",
+            message: err.response?.data?.msg || "Login failed",
             isAuthenticated: false
           });
         }
       },
-
+       checkAuth: async () => {
+        try {
+          const res = await apiStack.getUser(); // IMPORTANT
+          set({ isAuthenticated: true });
+        } catch (err) {
+          set({ isAuthenticated: false });
+        }
+      },
       logout: () =>
         set({
           isAuthenticated: false,
@@ -57,7 +64,7 @@ export const useAuth = create<AuthState>()(
           message: ""
         }),
     }),
-
+    
     {
       name: "auth-store", // localStorage key
       partialize: (state) => ({
@@ -67,3 +74,5 @@ export const useAuth = create<AuthState>()(
     }
   )
 );
+
+export default useAuth;

@@ -12,7 +12,7 @@ from routes.internship import intern_bp
 load_dotenv()
 def create_app(config_class=Config):
     app = Flask(__name__)
-    CORS(app, supports_credentials=True, origins=["http://127.0.0.1:5000"])
+    CORS(app, supports_credentials=True, origins=["http://127.0.0.1:3000"])
     app.config.from_object(config_class)
 
     db.init_app(app)

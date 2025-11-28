@@ -1,8 +1,8 @@
 import axiosClient from "./axiosClient";
 
 const apiStack = {
-  getUser: () => axiosClient.get("/auth/me"),
-  login: (data) => axiosClient.post("/auth/login", data),
+  getUser: () => axiosClient.get("/state"),
+  login: (data) => axiosClient.post("/login", data),
   logout: () => axiosClient.post("/auth/logout"),
 };
 
