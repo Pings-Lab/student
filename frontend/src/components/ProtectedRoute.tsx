@@ -10,7 +10,7 @@ const ProtectedRoute = ({ redirectTo = "/auth" }) => {
 
   useEffect(() => {
     const verify = async () => {
-      await checkAuth();   // calls /auth/me and updates zustand
+      await checkAuth();
       setChecking(false);
     };
     verify();
