@@ -46,3 +46,52 @@
     padding: 1% 2%;
     border: 1px solid white;
 }
+
+#proscreen{
+    height: 95%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 3% 2%;
+}
+
+#proscreen form{
+    height: auto;
+    width: 40%;
+    
+    padding: 3% 3%;
+    background-image: none;
+}
+
+#proscreen form div{
+    height: 5vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+#proscreen form input{
+    height: 100%;
+    width: 60%;
+    background-color: rgb(32, 32, 32);
+    -webkit-appearance: none;
+    -moz-appearance: none;    /* For Firefox */
+     appearance: none;  
+     color: aliceblue; 
+     font-size: calc(0.8vh + 0.8vw);  
+     border: none;    
+     text-align: center;
+}
+#proscreen form p{
+    height: 100%;
+    width: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(0.8vh + 0.8vw);
+    
+}
+
+#proscreen input:focus {
+  outline: none;
+}

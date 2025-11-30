@@ -2,14 +2,14 @@ import { create } from "zustand";
 import apiStack from "../api/apiStack";
 
 interface ProfileState {
-  f_name: string | null;
-  l_name: string | null;
-  username: string | null;
-  gender: string | null;
-  country: string | null;
-  pin: string | null;
-  edu: string | null;
-  dob: string | null;
+  f_name: string | " ";
+  l_name: string | " ";
+  username: string | " ";
+  gender: string | " ";
+  country: string | " ";
+  pin: string | " ";
+  edu: string | " ";
+  dob: string | " ";
   verified: boolean;
 
   loading: boolean;
@@ -19,14 +19,14 @@ interface ProfileState {
 }
 
 export const useProfileStore = create<ProfileState>((set) => ({
-  f_name: null,
-  l_name: null,
-  username: null,
-  gender: null,
-  country: null,
-  pin: null,
-  edu: null,
-  dob: null,
+  f_name: "",
+  l_name: "",
+  username: "",
+  gender: "",
+  country: "",
+  pin: "",
+  edu: "",
+  dob: "",
   verified: false,
 
   loading: false,

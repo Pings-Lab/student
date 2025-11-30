@@ -5,9 +5,12 @@ import logo from '../assets/ping.jpg'
 import { SquareMenu } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import useAuth from '../store/authStore'
+import useTab from '../store/tab'
 const Navbar = () => {
     const [hover, setHover] = useState(false);
     const [clicked, setClicked] = useState(false);
+    const {tab ,setTab} = useTab();
+
     const navigate = useNavigate();
     const { logout } = useAuth();
     const handleClick = () => {
@@ -17,6 +20,10 @@ const Navbar = () => {
     const handleLogout = () => {
       logout();
       navigate("/");
+    }
+
+    const changetab = (v: any) => {
+      setTab(v);
     }
   return (
     <div id='nav'>
@@ -65,35 +72,37 @@ const Navbar = () => {
            </tr>
 
             
-            <tr style={{width: clicked ? "3vw" : "15vw"}}>
+            <tr style={{width: clicked ? "3vw" : "15vw"}} onClick={() => changetab(0)}
+>
                 <td className='icon'><LayoutDashboard color='aqua' style={{ width: '100%', height: '100%' }}/></td>
                 <td className='name' style={{display: clicked ? "none" : "flex"}}>Dashboard</td>
             </tr>
-            <tr style={{width: clicked ? "3vw" : "15vw"}}>
+            <tr style={{width: clicked ? "3vw" : "15vw"}} onClick={() => changetab(1)}
+>
                 <td className='icon'><User2Icon color='aqua' style={{ width: '100%', height: '100%' }}/></td>
                 <td className='name' style={{display: clicked ? "none" : "flex"}}>Profile</td>
             </tr>
-            <tr style={{width: clicked ? "3vw" : "15vw"}}>
+            <tr style={{width: clicked ? "3vw" : "15vw"}} onClick={() => changetab(2)}>
                 <td className='icon'><Users color='aqua' style={{ width: '100%', height: '100%' }}/></td>
                 <td className='name' style={{display: clicked ? "none" : "flex"}}>Collab</td>
             </tr>
-            <tr style={{width: clicked ? "3vw" : "15vw"}}>
+            <tr style={{width: clicked ? "3vw" : "15vw"}} onClick={() => changetab(3)}>
                 <td className='icon'><BriefcaseBusiness color='aqua' style={{ width: '100%', height: '100%' }}/></td>
                 <td className='name' style={{display: clicked ? "none" : "flex"}}>Internship</td>
             </tr>
-            <tr style={{width: clicked ? "3vw" : "15vw"}}>
+            <tr style={{width: clicked ? "3vw" : "15vw"}} onClick={() => changetab(4)}>
                 <td className='icon'><SquareKanban color='aqua' style={{ width: '100%', height: '100%' }}/></td>
                 <td className='name' style={{display: clicked ? "none" : "flex"}}>Projects</td>
             </tr>
-            <tr style={{width: clicked ? "3vw" : "15vw"}}>
+            <tr style={{width: clicked ? "3vw" : "15vw"}} onClick={() => changetab(5)}>
                 <td className='icon'><ClipboardList color='aqua' style={{ width: '100%', height: '100%' }}/></td>
                 <td className='name' style={{display: clicked ? "none" : "flex"}}>Tasks</td>
             </tr>
-            <tr style={{width: clicked ? "3vw" : "15vw"}}>
+            <tr style={{width: clicked ? "3vw" : "15vw"}} onClick={() => changetab(6)}>
                 <td className='icon'><Trophy color='aqua' style={{ width: '100%', height: '100%' }}/></td>
                 <td className='name' style={{display: clicked ? "none" : "flex"}}>Leadboard</td>
             </tr>
-            <tr style={{width: clicked ? "3vw" : "15vw"}}>
+            <tr style={{width: clicked ? "3vw" : "15vw"}} onClick={() => changetab(7)}>
                 <td className='icon'><Bell color='aqua' style={{ width: '100%', height: '100%' }}/></td>
                 <td className='name' style={{display: clicked ? "none" : "flex"}}>Notifications</td>
             </tr>
