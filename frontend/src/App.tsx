@@ -15,7 +15,7 @@ const App = () => {
           The best Platform where you will learn to build impactful solutions.
           <p>Learn, Practice, Collab with group and more.</p>
           <div>
-            <a href="#">Explore</a>
+            <a href="#page3">Explore</a>
           <Link to="/auth">Join</Link>
           </div>
           </div>

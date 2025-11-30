@@ -2,7 +2,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import useAuth from "../store/authStore";
 import { useEffect, useState } from "react";
 
-const PublicRoute = ({ redirectPath = "/" }) => {
+const PublicRoute = ({ redirectPath = "/dashboard" }) => {
   const isAuthenticated = useAuth((s: any) => s.isAuthenticated);
   const checkAuth = useAuth((s: any) => s.checkAuth);
 

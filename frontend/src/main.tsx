@@ -6,6 +6,7 @@ import PublicRoute from "./components/PublicRoute";
 import App from './App.tsx'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Auth from './auth/Auth.tsx'
+import Dashboard from './pages/Dashboard.tsx';
 
 createRoot(document.getElementById('root')!).render(
   
@@ -13,9 +14,10 @@ createRoot(document.getElementById('root')!).render(
       <BrowserRouter>
         <Routes >
           <Route element={<ProtectedRoute/>}>
-          <Route path="/" element={<App />} />
+            <Route path="/dashboard" element={<Dashboard />} />
           </Route>
-          <Route element={<PublicRoute redirectPath="/" />}> 
+          <Route element={<PublicRoute redirectPath="/dashboard" />}> 
+          <Route path="/" element={<App />} />
             <Route path="/auth" element={<Auth />} />
           </Route>
           
