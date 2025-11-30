@@ -126,7 +126,7 @@ def info():
  except Exception as e:
   return jsonify({"success": False, "msg": "something went wrong"}), 400
 
-
+#get otp
 @profile_bp.route("/verify", methods=["GET"])
 @jwt_required()
 def send_otp():
@@ -138,11 +138,11 @@ def send_otp():
   return jsonify({"success": False, "msg": "unauthorized access"}), 401
 
  if profile.verified == True:
-  return jsonify({"success": True, "msg": "profile already verified"}), 200
+  return jsonify({"success": True, "msg": "Account already verified"}), 200
 
  return jsonify({"success":True, "msg":"otp sent"}), 200
 
-
+#send otp
 @profile_bp.route("/verify", methods=["POST"])
 @jwt_required()
 def verify():
@@ -154,8 +154,26 @@ def verify():
   return jsonify({"success": False, "msg": "unauthorized access"}), 401
 
  if profile.verified == True:
-  return jsonify({"success": True, "msg": "profile already verified"}), 200
+  return jsonify({"success": True, "msg": "Account already verified"}), 200
 
  profile.verified = True
  db.session.commit()
  return jsonify({"success":True, "msg":"account verified"}), 200
+
+#get profile info
+@profile_bp.route("/info", methods=["GET"])
+@jwt_required()
+def get_info():
+ id=json.loads(get_jwt_identity())
+ id=id["id"]
+
+ profile = Profile.query.get(id)
+ if not profile:
+  return jsonify({"success": False, "msg": "unauthorized access"}), 401
+
+ if profile.verified != True:
+  return jsonify({"success": False, "msg": "Account not verified"}), 400
+
+ auth=Auth.query.get(id)
+ infobox={"l_name": auth.l_name, "f_name": auth.f_name,"username": profile.username, "gender": profile.gender, "country": profile.country, "dob": profile.dob, "verified": profile.verified}
+ return jsonify({"success": True, "message": "user data", "data": infobox}), 200

@@ -1,13 +1,15 @@
 import Navbar from '../components/Navbar'
 import "./dashboard.css"
-import { SquareMenu } from 'lucide-react'
+import Land from './Land'
 const Dashboard = () => {
   return (
     <div id="dashbody">
         
     <Navbar/> 
     
-    
+    <div id="panel">
+      <Land/>
+    </div>
     
     
     </div>
