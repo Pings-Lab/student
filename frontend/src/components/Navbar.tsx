@@ -14,20 +14,49 @@ const Navbar = () => {
   return (
     <div id='nav'>
         <table >
-            <tr style={{width: clicked ? "3vw" : "15vw"}}>
-                <td className='icon' onMouseEnter={() => setHover(true)}
-                         onMouseOut={() => setHover(false)} style={{transition: "all 1s ease"}}>
-                    {hover ? (
-                       <SquareMenu color='white' style={{ width: '100%', height: '100%' }} onClick={handleClick}/>
-                    ) : (
-                  <img
-                         src={logo}
-                         style={{"height": "100%", "width": "100%", "borderRadius": "50%"}}
-                  />)}
+            <tr style={{ width: clicked ? "3vw" : "15vw" }}>
+  <td
+    className="icon"
+    onMouseEnter={() => setHover(true)}
+    onMouseLeave={() => setHover(false)}
+    style={{ position: "relative", transition: "all 1s ease" }}
+  >
 
-                </td>
-                <td className='name' id='logo' style={{display: clicked ? "none" : "flex"}}>Ping's Lab</td>
-            </tr>
+    {/* IMAGE (default) */}
+    <img
+      src={logo}
+      style={{
+        height: "100%",
+        width: "100%",
+        borderRadius: "50%",
+        position: "absolute",
+        inset: 0,
+        opacity: hover ? 0 : 1,
+        transition: "opacity 0.6s ease"
+      }}
+    />
+
+    {/* ICON (on hover) */}
+            <SquareMenu
+              color="white"
+              onClick={handleClick}
+              style={{
+                 width: "100%",
+                 height: "100%",
+                 position: "absolute",
+                 inset: 0,
+                 opacity: hover ? 1 : 0,
+                transition: "opacity 0.6s ease"
+            }}
+            />
+
+            </td>
+
+             <td className="name" id="logo" style={{ display: clicked ? "none" : "flex" }}>
+              Ping's Lab
+            </td>
+           </tr>
+
             <hr style={{"width": "100%", "margin": "5% auto"}}/>
             <tr style={{width: clicked ? "3vw" : "15vw"}}>
                 <td className='icon'><LayoutDashboard color='aqua' style={{ width: '100%', height: '100%' }}/></td>
