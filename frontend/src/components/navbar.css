@@ -28,6 +28,7 @@ table tr{
     align-items: center;
     justify-content: space-evenly;
    overflow: hidden;
+   order: 1;
 }
 .icon, .name{
     cursor: pointer;

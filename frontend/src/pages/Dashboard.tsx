@@ -3,7 +3,7 @@ import "./dashboard.css"
 import { SquareMenu } from 'lucide-react'
 const Dashboard = () => {
   return (
-    <div id="body">
+    <div id="dashbody">
         
     <Navbar/> 
     

@@ -1,15 +1,22 @@
 import './navbar.css'
 import { useState } from 'react'
-import { LayoutDashboard, User2Icon, Users, BriefcaseBusiness, SquareKanban, ClipboardList, Trophy, Bell } from 'lucide-react'
+import { LayoutDashboard, User2Icon, Users, BriefcaseBusiness, SquareKanban, ClipboardList, Trophy, Bell, LogOut } from 'lucide-react'
 import logo from '../assets/ping.jpg'
 import { SquareMenu } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import useAuth from '../store/authStore'
 const Navbar = () => {
     const [hover, setHover] = useState(false);
     const [clicked, setClicked] = useState(false);
-
+    const navigate = useNavigate();
+    const { logout } = useAuth();
     const handleClick = () => {
 
       setClicked(!clicked);
+    }
+    const handleLogout = () => {
+      logout();
+      navigate("/");
     }
   return (
     <div id='nav'>
@@ -57,7 +64,7 @@ const Navbar = () => {
             </td>
            </tr>
 
-            <hr style={{"width": "100%", "margin": "5% auto"}}/>
+            
             <tr style={{width: clicked ? "3vw" : "15vw"}}>
                 <td className='icon'><LayoutDashboard color='aqua' style={{ width: '100%', height: '100%' }}/></td>
                 <td className='name' style={{display: clicked ? "none" : "flex"}}>Dashboard</td>
@@ -89,6 +96,10 @@ const Navbar = () => {
             <tr style={{width: clicked ? "3vw" : "15vw"}}>
                 <td className='icon'><Bell color='aqua' style={{ width: '100%', height: '100%' }}/></td>
                 <td className='name' style={{display: clicked ? "none" : "flex"}}>Notifications</td>
+            </tr>
+            <tr style={{width: clicked ? "3vw" : "15vw", marginTop: "auto"}} onClick={handleLogout}>
+                <td className='icon'><LogOut color='aqua' style={{ width: '100%', height: '100%' }}/></td>
+                <td className='name' style={{display: clicked ? "none" : "flex"}}>Logout</td>
             </tr>
         </table>
     </div>

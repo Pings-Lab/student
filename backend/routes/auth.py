@@ -4,7 +4,7 @@ from utils.validators import valid_mobile, valid_email, valid_pass
 from models import Auth, Profile
 from extension import db
 from utils.password import hash_password, verify_password
-from flask_jwt_extended import create_access_token, set_access_cookies, jwt_required, get_jwt_identity
+from flask_jwt_extended import create_access_token, set_access_cookies, jwt_required, get_jwt_identity, unset_access_cookies
 
 auth_bp=Blueprint('auth',__name__,url_prefix="/api/v1")
 
@@ -125,3 +125,15 @@ def forgot():
   return jsonify({"success": False, "msg": "account not found"}), 400
  return jsonify({"success": True, "msg": "recovery email sent"}), 200
 
+#logout API
+@auth_bp.route("/logout",methods=["POST"])
+@jwt_required()
+def logout():
+ token=get_jwt_identity()
+ token=json.loads(token)
+ user = Auth.query.get(token["id"])
+ if not user:
+  return jsonify({"success": False, "msg": "unauthorized access"}), 401
+ resp = jsonify({"success": True, "msg": "Logged out"})
+ unset_access_cookies(resp)
+ return resp, 200

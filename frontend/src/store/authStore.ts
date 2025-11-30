@@ -89,13 +89,34 @@ const useAuth = create<AuthState>()(
           });
         }
       },
-      logout: () =>
-        set({
-          isAuthenticated: false,
-          email: "",
-          password: "",
-          message: ""
-        }),
+     logout: async () => {
+  try {
+    // call backend to clear httpOnly cookie
+    await apiStack.logout();
+
+    // clear in-memory state
+    set({
+      isAuthenticated: false,
+      email: "",
+      password: "",
+      message: ""
+    });
+
+    // remove persisted localStorage entry (replace 'auth-store' with your persist name)
+    try { localStorage.removeItem("auth-store"); } catch(e) {}
+
+    // optional: force checkAuth to run or navigate from component
+  } catch (err) {
+    // still clear local state even if backend fails
+    set({
+      isAuthenticated: false,
+      email: "",
+      password: "",
+      message: ""
+    });
+    localStorage.removeItem("auth-store");
+  }
+}
     }),
     
     {
