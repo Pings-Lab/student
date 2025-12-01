@@ -18,6 +18,7 @@ interface ProfileState {
   error: string | null;
 
   fetchProfile: () => Promise<void>;
+  setVerified: (v: boolean) => void;
 }
 
 export const useProfileStore = create<ProfileState>((set) => ({
@@ -64,7 +65,7 @@ export const useProfileStore = create<ProfileState>((set) => ({
     } catch (err: any) {
       set({
         loading: false,
-        error: "Failed to load profile"
+        error: err.response?.data?.msg || err.message || "Something went wrong"
       });
     }
   }

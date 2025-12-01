@@ -7,6 +7,7 @@ import App from './App.tsx'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Auth from './auth/Auth.tsx'
 import Dashboard from './pages/Dashboard.tsx';
+import Verify from './components/Verify.tsx';
 
 createRoot(document.getElementById('root')!).render(
   
@@ -15,6 +16,7 @@ createRoot(document.getElementById('root')!).render(
         <Routes >
           <Route element={<ProtectedRoute/>}>
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/verify" element={<Verify/>}/>
           </Route>
           <Route element={<PublicRoute redirectPath="/dashboard" />}> 
           <Route path="/" element={<App />} />

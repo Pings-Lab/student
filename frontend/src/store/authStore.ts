@@ -11,6 +11,7 @@ interface AuthState {
   message: string;
   loading: boolean;
   isAuthenticated: boolean;
+  otp: String;
 
   setF_name: (v: string) => void;
   setL_name: (v: string) => void;
@@ -19,7 +20,10 @@ interface AuthState {
   setPassword: (v: string) => void;
   loginUser: () => Promise<void>;
   signupUser: () => Promise<void>;
+  setOtp: (v: string) => void;
   logout: () => void;
+  emailOtp: () => Promise<void>;
+  verifyOtp: () => Promise<void>;
 }
 
 const useAuth = create<AuthState>()(
@@ -33,12 +37,14 @@ const useAuth = create<AuthState>()(
       message: "",
       loading: false,
       isAuthenticated: false,
+      otp: "",
 
       setEmail: (v) => set({ email: v }),
       setPassword: (v) => set({ password: v }),
       setL_name: (v) => set({ l_name: v }),
       setF_name: (v) => set({ f_name: v }),
       setMobile: (v) => set({ mobile: v }),
+      setOtp: (v) => set({ otp: v }),
 
       loginUser: async () => {
         const { email, password } = get();
@@ -67,6 +73,34 @@ const useAuth = create<AuthState>()(
           set({ isAuthenticated: true });
         } catch (err) {
           set({ isAuthenticated: false });
+        }
+      },
+      emailOtp: async () => {
+        try {
+          const res = await apiStack.getOtp();
+          
+        } catch (err: any) {
+          set({
+             message: err.response?.data?.msg || "something went wrong"
+          });
+         
+        }
+      },
+      verifyOtp: async () => {
+        const { otp } = get();
+        
+        try {
+          const res = await apiStack.sendOtp({otp});
+          set({
+             message: "Account verified"
+          });
+         
+
+          
+        } catch (err: any) {
+          set({
+             message: err.response?.data?.msg || "something went wrong"
+          });
         }
       },
       signupUser: async () => {
