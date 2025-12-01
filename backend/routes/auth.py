@@ -48,11 +48,11 @@ def signup():
 
  profile=Profile(
   id=id[:15],
-  username=email,
+  username=f_name+l_name,
   gender="m",
   country="India",
   pin="582102",
-  edu="g",
+  edu="ABCD",
   dob="2000-01-01"
  )
  try:
@@ -61,6 +61,7 @@ def signup():
   db.session.commit()
   return jsonify({"success": True, "msg": "account created successfully"}), 201
  except Exception as e:
+  print(e)
   return jsonify({"success": False, "msg": "something went wrong during signup"}), 500
 
 

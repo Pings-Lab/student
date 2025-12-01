@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from utils.validators import valid_pass
+from utils.validators import valid_pass, valid_mobile
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from extension import db
 from models import Auth, Profile
@@ -88,6 +88,7 @@ def info():
   return jsonify({"success": False, "msg": "unauthorized access"}), 401
  try:
   data=request.json
+  mobile=data["mobile"].strip()
   edu=data["edu"].strip()
   pin=data["pin"].strip()
   dob=data["dob"].strip()
@@ -115,12 +116,16 @@ def info():
  gen="mftl"
  if gender not in gen:
   return jsonify({"success": False, "msg": "invalid gender identity"}), 400
+
+ if not valid_mobile(mobile):
+  return jsonify({"success": False, "msg": "invalid mobile format"}), 400
  try:
   profile=Profile.query.get(id)
   profile.edu = edu
   profile.pin = pin
   profile.dob = dob_date
   profile.gender = gender
+  auth.mobile = mobile
   db.session.commit()
   return jsonify({"success": True, "msg": "profile updated"}), 201
  except Exception as e:

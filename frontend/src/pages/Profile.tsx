@@ -6,18 +6,25 @@ import { ShieldCheck, Pencil } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
-    const {f_name, l_name, username, gender, country, edu, verified, dob, created, mobile, email, pin} = useProfileStore();
+    const {f_name, l_name, username, gender, country, edu, verified, dob, created, mobile, email, pin, error} = useProfileStore();
     const fetchProfile = useProfileStore((s) => s.fetchProfile);
     const profile = useProfileStore((s) => s);
     const nav = useNavigate()  
       useEffect(() => {
         fetchProfile();
       }, []);
-
-    const [edit, setedit]= useState(true);
-    const handleForm=(e: any)=>{
+    const {setDob, setEdu, setGender, setMobile, setPin, setUsername, changeUsername, changeProfile} =useProfileStore()
+    const [edit1, setedit1]= useState(true);
+    const [edit2, setedit2]= useState(true);
+    const handleForm1=(e: any)=>{
        e.preventDefault();
-       setedit(!edit);
+       changeUsername();
+       setedit1(!edit1);
+    }
+    const handleForm2=(e: any)=>{
+       e.preventDefault();
+       changeProfile();
+       setedit2(!edit2);
     }
   return (
     <div className="panelpage">
@@ -61,15 +68,15 @@ const Profile = () => {
                 
                 <div>
                     <p>Username: </p>
-                    <input type="text" value={username} disabled={edit}/>
+                    <input type="text" value={username} disabled={edit1} onChange={(e) => setUsername(e.target.value)}/>
                 </div>
-            
+                   
                 <div>
-                    <button onClick={handleForm}>
-                        {!edit && (
+                    <button onClick={handleForm1}>
+                        {!edit1 && (
                            "Update"
                         )}
-                        {edit && (
+                        {edit1 && (
                             <Pencil/> 
                         )}
                     </button>
@@ -82,30 +89,31 @@ const Profile = () => {
                 
                 <div>
                     <p>DOB: </p>
-                    <input type="date" value={dob} disabled={edit}/>
+                    <input type="date" value={dob} disabled={edit2} onChange={(e) => setDob(e.target.value)}/>
                 </div>
                 <div>
                     <p>Mobile: </p>
-                    <input type="text" value={mobile} disabled={edit}/>
+                    <input type="text" value={mobile} disabled={edit2} onChange={(e) => setMobile(e.target.value)}/>
                 </div>
                 <div>
                     <p>Gender: </p>
-                    <input type="text" value={gender} disabled={edit}/>
+                    <input type="text" value={gender} disabled={edit2} onChange={(e) => setGender(e.target.value)}/>
                 </div>
                 <div>
                     <p>PIN: </p>
-                    <input type="text" value={pin} disabled={edit}/>
+                    <input type="text" value={pin} disabled={edit2} onChange={(e) => setPin(e.target.value)}/>
                 </div>
                 <div>
                     <p>College: </p>
-                    <input type="text" value={edu} disabled={edit}/>
+                    <input type="text" value={edu} disabled={edit2} onChange={(e) => setEdu(e.target.value)}/>
                 </div>
+               
                 <div>
-                    <button onClick={handleForm}>
-                        {!edit && (
+                    <button onClick={handleForm2}>
+                        {!edit2 && (
                            "Update"
                         )}
-                        {edit && (
+                        {edit2 && (
                             <Pencil/> 
                         )}
                     </button>

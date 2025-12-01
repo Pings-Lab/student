@@ -8,6 +8,8 @@ const apiStack = {
   userProfile : () => axiosClient.get("/profile/info"),
   getOtp : () => axiosClient.get("/profile/verify"),
   sendOtp : (data) => axiosClient.post("/profile/verify", data),
+  c_username: (data) => axiosClient.post("/profile/username", data),
+  c_profile: (data) => axiosClient.post("/profile/info", data),
 };
 
 export default apiStack;

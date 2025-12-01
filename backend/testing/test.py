@@ -70,7 +70,8 @@ def info():
    "edu": "VTU Belagavi",
    "pin": "582102",
    "dob": "03-12-2003",
-   "gender": "m"
+   "gender": "m",
+   "mobile": "1234567890"
  }
  response = session.post(url+"/profile/info", json=payload)
  print("result: "+response.text+" "+str(response.status_code))

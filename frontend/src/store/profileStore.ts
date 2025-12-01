@@ -3,25 +3,33 @@ import apiStack from "../api/apiStack";
 
 interface ProfileState {
   f_name: string | " ";
-  l_name: string | " ";
-  username: string | " ";
-  gender: string | " ";
-  country: string | " ";
-  pin: string | " ";
-  edu: string | " ";
-  dob: Date ;
+  l_name: String | " ";
+  username: String | " ";
+  gender: String | " ";
+  country: String | " ";
+  pin: String | " ";
+  edu: String | " ";
+  dob: String ;
   created: Date ;
   email: String | " ";
   mobile: String | " ";
   verified: boolean;
   loading: boolean;
-  error: string | null;
+  error: String | null;
 
   fetchProfile: () => Promise<void>;
+  changeUsername: () => Promise<void>;
+  changeProfile: () => Promise<void>;
+  setUsername: (v: String) => void;
+  setGender: (v: String) => void;
+  setPin: (v: String) => void;
+  setMobile: (v: String) => void;
+  setEdu: (v: String) => void;
+  setDob: (v: String) => void;
   setVerified: (v: boolean) => void;
 }
 
-export const useProfileStore = create<ProfileState>((set) => ({
+export const useProfileStore = create<ProfileState>((set, get) => ({
   f_name: "",
   l_name: "",
   username: "",
@@ -29,7 +37,7 @@ export const useProfileStore = create<ProfileState>((set) => ({
   country: "",
   pin: "",
   edu: "",
-  dob: "2001-01-01",
+  dob: "",
   mobile: "",
   email: "",
   created: "2001-01-01",
@@ -37,6 +45,12 @@ export const useProfileStore = create<ProfileState>((set) => ({
 
   loading: false,
   error: null,
+  setUsername: (v) => set({ username: v }),
+  setGender: (v) => set({ gender: v }),
+  setPin: (v) => set({ pin: v }),
+  setMobile: (v) => set({ mobile: v }),
+  setEdu: (v) => set({ edu: v }),
+  setDob: (v) => set({ dob: v }),
 
   fetchProfile: async () => {
     try {
@@ -68,5 +82,33 @@ export const useProfileStore = create<ProfileState>((set) => ({
         error: err.response?.data?.msg || err.message || "Something went wrong"
       });
     }
-  }
+  },
+
+  changeUsername: async () => {
+        const {username} = get();
+        try {
+          set({ loading: true });
+          const res = await apiStack.c_username({ username });
+
+        } catch (err: any) {
+          set({
+            loading: false,
+            error: err.response?.data?.msg || "something went wrong",
+          });
+        }
+      },
+      changeProfile: async () => {
+        const {mobile, pin, edu, dob, gender} = get();
+        try {
+          set({ loading: true });
+          const res = await apiStack.c_username({ mobile, gender, pin, edu, dob });
+
+        } catch (err: any) {
+          set({
+            loading: false,
+            error: err.response?.data?.msg || "something went wrong",
+          });
+        }
+      }
+
 }));
