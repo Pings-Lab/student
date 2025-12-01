@@ -9,9 +9,11 @@ interface ProfileState {
   country: string | " ";
   pin: string | " ";
   edu: string | " ";
-  dob: string | " ";
+  dob: Date ;
+  created: Date ;
+  email: String | " ";
+  mobile: String | " ";
   verified: boolean;
-
   loading: boolean;
   error: string | null;
 
@@ -26,7 +28,10 @@ export const useProfileStore = create<ProfileState>((set) => ({
   country: "",
   pin: "",
   edu: "",
-  dob: "",
+  dob: "2001-01-01",
+  mobile: "",
+  email: "",
+  created: "2001-01-01",
   verified: false,
 
   loading: false,
@@ -49,7 +54,9 @@ export const useProfileStore = create<ProfileState>((set) => ({
         edu: data.edu,
         dob: data.dob,
         verified: data.verified,
-
+        mobile: data.mobile,
+        email: data.email,
+        created: data.created,
         loading: false,
         error: null
       });

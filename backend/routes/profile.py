@@ -175,5 +175,9 @@ def get_info():
   return jsonify({"success": False, "msg": "Account not verified"}), 400
 
  auth=Auth.query.get(id)
- infobox={"l_name": auth.l_name, "f_name": auth.f_name,"username": profile.username, "gender": profile.gender, "country": profile.country, "dob": profile.dob, "verified": profile.verified, "edu": profile.edu}
+ created = auth.created.strftime("%Y-%m-%d")
+ dob = profile.dob.strftime("%Y-%m-%d")
+ print(created)
+ print(dob)
+ infobox={"l_name": auth.l_name, "f_name": auth.f_name,"username": profile.username, "gender": profile.gender, "country": profile.country, "dob": dob, "verified": profile.verified, "edu": profile.edu, "mobile": auth.mobile, "email": auth.email, "created": created, "pin": profile.pin}
  return jsonify({"success": True, "message": "user data", "data": infobox}), 200
