@@ -14,6 +14,9 @@ def view_applied():
  if not profile:
   return jsonify({"success": False, "msg":"unauthorized access"}), 401
 
+ if profile.verified != True:
+  return jsonify({"success": False, "msg": "Account not verified"}), 400
+
  interns=Internship.query.filter_by(uid=id).all()
  if not interns:
   return jsonify({"success": False, "msg": "not applied for any internship"}), 400
@@ -36,6 +39,8 @@ def apply_intern():
  if not profile:
   return jsonify({"success": False, "msg":"unauthorized access"}), 401
 
+ if profile.verified != True:
+  return jsonify({"success": False, "msg": "Account not verified"}), 400
  try:
   data=request.json
   cid=data["domain"].strip()

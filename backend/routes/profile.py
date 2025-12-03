@@ -86,6 +86,13 @@ def info():
  user = Auth.query.get(id)
  if not user:
   return jsonify({"success": False, "msg": "unauthorized access"}), 401
+
+ profile = Profile.query.get(id)
+ if not profile:
+  return jsonify({"success": False, "msg": "unauthorized access"}), 401
+
+ if profile.verified != True:
+  return jsonify({"success": False, "msg": "Account not verified"}), 400
  try:
   data=request.json
   mobile=data["mobile"].strip()
@@ -120,7 +127,6 @@ def info():
  if not valid_mobile(mobile):
   return jsonify({"success": False, "msg": "invalid mobile format"}), 400
  try:
-  profile=Profile.query.get(id)
   profile.edu = edu
   profile.pin = pin
   profile.dob = dob_date
