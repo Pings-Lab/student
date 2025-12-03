@@ -83,13 +83,14 @@ const Navbar = () => {
                 <td className='name' style={{display: clicked ? "none" : "flex"}}>Profile</td>
             </tr>
             <tr style={{width: clicked ? "3vw" : "15vw"}} onClick={() => changetab(2)}>
-                <td className='icon'><Users color='aqua' style={{ width: '100%', height: '100%' }}/></td>
-                <td className='name' style={{display: clicked ? "none" : "flex"}}>Collab</td>
-            </tr>
-            <tr style={{width: clicked ? "3vw" : "15vw"}} onClick={() => changetab(3)}>
                 <td className='icon'><BriefcaseBusiness color='aqua' style={{ width: '100%', height: '100%' }}/></td>
                 <td className='name' style={{display: clicked ? "none" : "flex"}}>Internship</td>
             </tr>
+            <tr style={{width: clicked ? "3vw" : "15vw"}} onClick={() => changetab(3)}>
+                <td className='icon'><Users color='aqua' style={{ width: '100%', height: '100%' }}/></td>
+                <td className='name' style={{display: clicked ? "none" : "flex"}}>Collab</td>
+            </tr>
+            
             <tr style={{width: clicked ? "3vw" : "15vw"}} onClick={() => changetab(4)}>
                 <td className='icon'><SquareKanban color='aqua' style={{ width: '100%', height: '100%' }}/></td>
                 <td className='name' style={{display: clicked ? "none" : "flex"}}>Projects</td>

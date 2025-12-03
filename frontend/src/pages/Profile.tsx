@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import logo from '../assets/ping.jpg'
 import { ShieldCheck, Pencil } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 
 const Profile = () => {
     const {f_name, l_name, username, gender, country, edu, verified, dob, created, mobile, email, pin, error} = useProfileStore();
@@ -13,18 +14,33 @@ const Profile = () => {
       useEffect(() => {
         fetchProfile();
       }, []);
-    const {setDob, setEdu, setGender, setMobile, setPin, setUsername, changeUsername, changeProfile} =useProfileStore()
+    const {setDob, setEdu, setGender, setMobile, setPin, setUsername, changeUsername, changeProfile, setError} =useProfileStore()
     const [edit1, setedit1]= useState(true);
     const [edit2, setedit2]= useState(true);
-    const handleForm1=(e: any)=>{
+    
+    const handleForm1 = async (e: any) => {
+            e.preventDefault();
+
+            const msg = await changeUsername();   // wait until API finishes
+
+           
+              toast(msg);
+             
+
+          
+          setedit1(true);
+         };
+    const handleForm2= async (e: any)=>{
        e.preventDefault();
-       changeUsername();
-       setedit1(!edit1);
-    }
-    const handleForm2=(e: any)=>{
-       e.preventDefault();
-       changeProfile();
-       setedit2(!edit2);
+
+            const msg = await changeProfile();   // wait until API finishes
+
+           
+              toast(msg);
+             
+
+          
+          setedit2(true);
     }
   return (
     <div className="panelpage">
@@ -72,14 +88,21 @@ const Profile = () => {
                 </div>
                    
                 <div>
-                    <button onClick={handleForm1}>
-                        {!edit1 && (
-                           "Update"
-                        )}
-                        {edit1 && (
-                            <Pencil/> 
-                        )}
+                    {edit1 ? (
+                     <button onClick={() => setedit1(false)}>
+                       <Pencil />
                     </button>
+               ) : (
+                 <button 
+                    type="button"
+                    onClick={(e) => { 
+                  e.stopPropagation(); 
+                  handleForm1(e);
+                  }}>
+                   Update
+                 </button>
+                )}
+
                 </div>
             </form>
             
@@ -109,14 +132,21 @@ const Profile = () => {
                 </div>
                
                 <div>
-                    <button onClick={handleForm2}>
-                        {!edit2 && (
-                           "Update"
-                        )}
-                        {edit2 && (
-                            <Pencil/> 
-                        )}
+                    {edit2 ? (
+                     <button onClick={() => setedit2(false)}>
+                       <Pencil />
                     </button>
+               ) : (
+                 <button 
+                    type="button"
+                    onClick={(e) => { 
+                  e.stopPropagation(); 
+                  handleForm2(e);
+                  }}>
+                   Update
+                 </button>
+                )}
+
                 </div>
             </form>
             
@@ -127,6 +157,7 @@ const Profile = () => {
             
             
         </div>
+        <ToastContainer />
     </div>
   )
 }

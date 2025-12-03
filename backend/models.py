@@ -39,20 +39,24 @@ class Profile(db.Model):
 class Domains(db.Model):
     __tablename__ = 'domains'
     id = db.Column(db.String(5), primary_key=True)
-    name = db.Column(db.String(30))
-    stack = db.Column(JSONB)
+    domain = db.Column(db.String(30))
+    type = db.Column(db.String(20))
+    category = db.Column(db.Integer)
+    cost = db.Column(db.Integer)
+    dur = db.Column(db.Integer)
+    view = db.Column(db.String(100))
 
     def __repr__(self):
         return f"<Domains {self.name}"
 
 class Internship(db.Model):
    __tablename__ = 'internships'
-   iid = db.Column(db.String(25), primary_key=True)
+   iid = db.Column(db.String(20), primary_key=True)
    uid = db.Column(db.String(15), db.ForeignKey('auth.id'))
    cid = db.Column(db.String(5), db.ForeignKey('domains.id'))
-   stack = db.Column(db.String(30))
-   duration = db.Column(db.Integer)
-   register_date = db.Column(
+   finished = db.Column(db.Integer)
+   progress = db.Column(db.Integer)
+   opted = db.Column(
         db.TIMESTAMP(timezone=True),
         server_default=func.now()
     )

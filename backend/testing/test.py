@@ -114,12 +114,8 @@ def list_interns():
 def apply_intern():
  print("11. Apply internships API\n")
  cid=input("Domain: ")
- stack=input("Stack: ")
- due=int(input("Months: "))
  payload={
  "domain":cid,
- "stack":stack,
- "months":due
  }
  response = session.post(url+"/internship/apply", json=payload)
  print("result: "+response.text+" "+str(response.status_code))

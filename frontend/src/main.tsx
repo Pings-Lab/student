@@ -1,4 +1,4 @@
-import { StrictMode } from 'react'
+
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -11,7 +11,7 @@ import Verify from './components/Verify.tsx';
 
 createRoot(document.getElementById('root')!).render(
   
-  <StrictMode>
+  
       <BrowserRouter>
         <Routes >
           <Route element={<ProtectedRoute/>}>
@@ -25,5 +25,5 @@ createRoot(document.getElementById('root')!).render(
           
         </Routes>
       </BrowserRouter>
-  </StrictMode>,
+  ,
 )

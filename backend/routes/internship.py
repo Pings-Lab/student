@@ -39,8 +39,6 @@ def apply_intern():
  try:
   data=request.json
   cid=data["domain"].strip()
-  stack=data["stack"].strip()
-  duration=int(data["months"])
  except Exception as e:
   return jsonify({"success": False, "msg":f"missing input parameters {e}"}), 401
 
@@ -48,25 +46,18 @@ def apply_intern():
 
  if interns:
   for i in interns:
-   if cid==i.cid and  stack==i.stack:
+   if cid==i.cid:
      return jsonify({"success": False, "msg":"you have already enrolled for this internship"}), 401
 
  domain=Domains.query.get(cid)
  if not domain:
   return jsonify({"success": False, "msg":"invalid internship name"}), 401
 
- stacks=domain.stack
- if stack not in stacks.values():
-  return jsonify({"success": False, "msg":"invalid internship name"}), 401
- if duration > 6 or duration < 1:
-  return jsonify({"success": False, "msg":"invalid internship duration"}), 401
  iid=str(uuid.uuid4())
  new=Internship(
-  iid=iid[:25],
+  iid=iid[:20],
   cid=cid,
   uid=id,
-  stack=stack,
-  duration=duration
  )
 
  try:

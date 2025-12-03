@@ -19,6 +19,6 @@ def list_dom():
    return jsonify({"success": False, "msg": "verify your account"}), 401
 
  domains=Domains.query.order_by(Domains.id).all()
- output=[{"id": d.id, "name": d.name} for d in domains]
+ output=[{"id": d.id, "name": d.domain, "cat": d.category, "type": d.type, "cost": d.cost, "dur": d.dur, "view": d.view} for d in domains]
 
  return jsonify({"success": True, "msg": "domains", "data":output}), 200

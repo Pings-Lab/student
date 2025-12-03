@@ -16,10 +16,11 @@ interface ProfileState {
   verified: boolean;
   loading: boolean;
   error: String | null;
+  
 
   fetchProfile: () => Promise<void>;
-  changeUsername: () => Promise<void>;
-  changeProfile: () => Promise<void>;
+  changeUsername: () => Promise<String>;
+  changeProfile: () => Promise<String>;
   setUsername: (v: String) => void;
   setGender: (v: String) => void;
   setPin: (v: String) => void;
@@ -27,6 +28,7 @@ interface ProfileState {
   setEdu: (v: String) => void;
   setDob: (v: String) => void;
   setVerified: (v: boolean) => void;
+  setError: (v: String | null) => void;
 }
 
 export const useProfileStore = create<ProfileState>((set, get) => ({
@@ -42,6 +44,7 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
   email: "",
   created: "2001-01-01",
   verified: false,
+  
 
   loading: false,
   error: null,
@@ -51,7 +54,7 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
   setMobile: (v) => set({ mobile: v }),
   setEdu: (v) => set({ edu: v }),
   setDob: (v) => set({ dob: v }),
-
+  setError: (v) => set({ error: v }),
   fetchProfile: async () => {
     try {
       set({ loading: true, error: null });
@@ -87,27 +90,31 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
   changeUsername: async () => {
         const {username} = get();
         try {
-          set({ loading: true });
+          
           const res = await apiStack.c_username({ username });
-
+          return "username changed successfully";
         } catch (err: any) {
           set({
-            loading: false,
+            
             error: err.response?.data?.msg || "something went wrong",
+            
           });
+          return err.response?.data?.msg;
         }
       },
       changeProfile: async () => {
         const {mobile, pin, edu, dob, gender} = get();
+        
         try {
-          set({ loading: true });
-          const res = await apiStack.c_username({ mobile, gender, pin, edu, dob });
-
+          
+          const res = await apiStack.c_profile({ mobile, gender, pin, edu, dob });
+          return "Profile updated successfully"
         } catch (err: any) {
           set({
-            loading: false,
+           
             error: err.response?.data?.msg || "something went wrong",
           });
+          return err.response?.data?.msg;
         }
       }
 

@@ -97,14 +97,14 @@ def info():
   return jsonify({"success": False, "msg": "missing parameters"}), 400
 
  try:
-    dob_date = datetime.strptime(dob, "%d-%m-%Y")
+    dob_date = datetime.strptime(dob, "%Y-%m-%d")
  except ValueError:
     return jsonify({"success": False, "msg": "invalid date format"}), 400
 
- min_date = datetime.strptime("01-01-1995", "%d-%m-%Y")
- max_date = datetime.strptime("01-01-2007", "%d-%m-%Y")
+ min_date = datetime.strptime("1995-01-01", "%Y-%m-%d")
+ max_date = datetime.strptime("2007-01-01", "%Y-%m-%d")
 
- if len(edu) < 10 or len(edu) > 60:
+ if len(edu) < 4 or len(edu) > 60:
   return jsonify({"success": False, "msg": "invalid university name"}), 400
 
  if len(pin) != 6:
@@ -125,10 +125,11 @@ def info():
   profile.pin = pin
   profile.dob = dob_date
   profile.gender = gender
-  auth.mobile = mobile
+  user.mobile = mobile
   db.session.commit()
   return jsonify({"success": True, "msg": "profile updated"}), 201
  except Exception as e:
+  print(e)
   return jsonify({"success": False, "msg": "something went wrong"}), 400
 
 #get otp

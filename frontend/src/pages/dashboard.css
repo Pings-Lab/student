@@ -47,7 +47,7 @@
     border: 1px solid white;
 }
 
-#proscreen{
+#proscreen, #intscreen{
     height: 95%;
     width: 100%;
     display: flex;
@@ -55,11 +55,37 @@
     padding: 3% 2%;
     justify-content: space-evenly;
 }
-
+#intscreen{
+    height: 100%;
+    flex-direction: column;
+    overflow: scroll;
+}
+#intscreen .slide{
+   margin: 5% auto;
+    width: 100%;
+     display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
+    gap: 2%;
+}
+h3, h4{
+       display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    width: 100%;
+    font-size: 3em;
+    background-image: linear-gradient(70deg, gray, white);
+    background-clip: text;
+    color: transparent;
+    
+}
+h4{
+font-size: 2em;
+}
 #proscreen form{
     height: auto;
     width: 40%;
-    
+    position: relative;
     padding: 3% 3%;
     background-image: none;
 }
@@ -92,7 +118,9 @@
     font-size: calc(0.8vh + 0.8vw);
     
 }
-
+#proscreen1 form button{
+    position: absolute;
+}
 #proscreen input:focus {
   outline: none;
 }
@@ -109,4 +137,56 @@
 
 #proedit form{
     width: 100%;
+}
+
+#intscreen .slide .box{
+    height: 35vh;
+    width: 100%;
+    display: inline-block;
+    margin: auto 2%;
+    border: 1px solid white;
+    
+}
+#submenu{
+    margin: 0 auto;
+    margin-top: 3%;
+     height: 8vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+#submenu button{
+     text-decoration: none;
+    font-size: calc(0.8vh + 0.8vw);
+    display: inline-block;
+    padding: 4px;
+    padding-left: 12px;
+    padding-right: 12px;
+    border-radius: 5px;
+    margin-left: 1vw;
+    margin-right: 1vw;
+    background-image: linear-gradient(37deg,blue,rgb(247, 91, 247));
+    
+    color: transparent;
+    background-clip: text;
+}
+
+#intscreen .slide .box img{
+    width: 100%;
+    height: 50%;
+    opacity: 0.6;
+   
+}
+#intscreen .slide .box .iinfos, #intscreen .slide .box .iinfos p{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 30%;
+    font-size: 1.2em;
+}
+#intscreen .slide .box .iinfos p{
+    width: fit-content;
 }
