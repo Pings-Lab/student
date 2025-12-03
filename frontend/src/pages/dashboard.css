@@ -59,6 +59,7 @@
     height: 100%;
     flex-direction: column;
     overflow: scroll;
+   
 }
 #intscreen .slide{
    margin: 5% auto;
@@ -142,7 +143,10 @@ font-size: 2em;
 #intscreen .slide .box{
     height: 35vh;
     width: 100%;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-evenly;
     margin: auto 2%;
     border: 1px solid white;
     
@@ -179,14 +183,52 @@ font-size: 2em;
     opacity: 0.6;
    
 }
-#intscreen .slide .box .iinfos, #intscreen .slide .box .iinfos p{
+#intscreen .slide .box .iinfos, #intscreen .slide .box .iinfos p, #apply div p{
     display: flex;
     align-items: center;
     justify-content: space-evenly;
     width: 100%;
-    height: 30%;
+    height: 15%;
     font-size: 1.2em;
 }
 #intscreen .slide .box .iinfos p{
     width: fit-content;
+    height: 100%;
+}
+
+#intscreen .slide .box button{
+    
+    font-size: calc(0.8vh + 0.8vw);
+    display: block;
+    padding: 4px;
+    padding-left: 12px;
+    padding-right: 12px;
+    border-radius: 5px;
+    margin: 0 auto;
+    background-image: linear-gradient(45deg, rgb(4, 65, 112), rgb(4, 4, 105));
+    color: white;
+
+}
+
+#intscreen #apply{
+    height: 95%;
+    width: 80%;
+    background-color: rgb(0, 0, 0);
+    z-index: 10;position: absolute;
+    margin: 0 auto;
+    box-shadow: 0px 0px 10px 1px white;
+    display: flex;
+    flex-direction: column;
+}
+
+#apply div p{
+    font-size: 2em;
+    justify-content: space-between;
+    color: wheat;
+}
+
+#apply ul li{
+    display: flex;
+    align-items: center;
+    
 }
