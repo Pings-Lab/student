@@ -64,3 +64,17 @@ class Internship(db.Model):
    status = db.Column(db.String(10), default='applied')
    def __repr__(self):
         return f"<Internship {self.iid}"
+
+class Alerts(db.Model):
+    __tablename__ = 'alerts'
+    alert_id = db.Column(db.String(20), primary_key=True)
+    uid = db.Column(db.String(15), db.ForeignKey('auth.id'))
+    message = db.Column(db.String(150))
+    recdate = db.Column(
+        db.TIMESTAMP(timezone=True),
+        server_default=func.now()
+    )
+    read = db.Column(db.Boolean, default=False)
+
+    def __repr__(self):
+        return f"<Domains {self.alert_id}"

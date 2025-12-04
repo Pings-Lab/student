@@ -8,6 +8,7 @@ from routes.auth import auth_bp
 from routes.profile import profile_bp
 from routes.domains import domains_bp
 from routes.internship import intern_bp
+from routes.alerts import alert_bp
 
 load_dotenv()
 def create_app(config_class=Config):
@@ -25,6 +26,7 @@ def create_app(config_class=Config):
     app.register_blueprint(profile_bp)
     app.register_blueprint(domains_bp)
     app.register_blueprint(intern_bp)
+    app.register_blueprint(alert_bp)
 
     return app
 

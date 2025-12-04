@@ -130,8 +130,28 @@ def list_ppl():
 
  print("\n-----------------------------------\n")
 
+#see alerts
+def list_alerts():
+ print("13. List alerts\n")
+ response = session.get(url+"/alerts/all")
+ print("result: "+response.text+" "+str(response.status_code))
+
+ print("\n-----------------------------------\n")
+
+#mark alert read
+def mark_read():
+ print("14. List alerts\n")
+ id=input("aid: ")
+ data={
+ "id": id
+ }
+ response = session.put(url+"/alerts/read", json=data)
+ print("result: "+response.text+" "+str(response.status_code))
+
+ print("\n-----------------------------------\n")
+
 def main():
- print("1.Login 2.State 3.Forgot 4.Change_pass 5.Chnage_name 6.info 7.dom_list 8.Send OTP 9.Verify Account 10. List internships 11. Apply intern 12. List people")
+ print("1.Login 2.State 3.Forgot 4.Change_pass 5.Chnage_name 6.info 7.dom_list 8.Send OTP 9.Verify Account 10. List internships 11. Apply intern 12. List people 13. List alerts 14. Mark read")
  while(1==1):
   choice=0
   try:
@@ -165,6 +185,10 @@ def main():
    apply_intern()
   elif choice == 12:
    list_ppl()
+  elif choice == 13:
+   list_alerts()
+  elif choice == 14:
+   mark_read()
   else:
    return 0
 
