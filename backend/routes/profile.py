@@ -191,3 +191,26 @@ def get_info():
  dob = profile.dob.strftime("%Y-%m-%d")
  infobox={"l_name": auth.l_name, "f_name": auth.f_name,"username": profile.username, "gender": profile.gender, "country": profile.country, "dob": dob, "verified": profile.verified, "edu": profile.edu, "mobile": auth.mobile, "email": auth.email, "created": created, "pin": profile.pin}
  return jsonify({"success": True, "message": "user data", "data": infobox}), 200
+
+@profile_bp.route("/people", methods=["GET"])
+@jwt_required()
+def list_ppl():
+ id=json.loads(get_jwt_identity())
+ id=id["id"]
+
+ profile = Profile.query.get(id)
+ if not profile:
+  return jsonify({"success": False, "msg": "unauthorized access"}), 401
+
+ if profile.verified != True:
+  return jsonify({"success": False, "msg": "Account not verified"}), 400
+
+ ppl = db.session.query(Profile).filter(Profile.id != id).all()
+
+ output=[]
+ for d in ppl:
+  pacc=Auth.query.get(d.id)
+  temp={ "username": d.username, "gender": d.gender, "country": d.country, "verified": d.verified, "name": f"{pacc.f_name} {pacc.l_name}", "joined": pacc.created.strftime("%Y-%m-%d")}
+  output.append(temp)
+
+ return jsonify({"success": True, "msg": "users list", "data": output}), 200

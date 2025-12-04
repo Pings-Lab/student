@@ -121,8 +121,17 @@ def apply_intern():
  print("result: "+response.text+" "+str(response.status_code))
 
  print("\n-----------------------------------\n")
+
+# List people
+def list_ppl():
+ print("12. List people\n")
+ response = session.get(url+"/profile/people")
+ print("result: "+response.text+" "+str(response.status_code))
+
+ print("\n-----------------------------------\n")
+
 def main():
- print("1.Login 2.State 3.Forgot 4.Change_pass 5.Chnage_name 6.info 7.dom_list 8.Send OTP 9.Verify Account 10. List internships")
+ print("1.Login 2.State 3.Forgot 4.Change_pass 5.Chnage_name 6.info 7.dom_list 8.Send OTP 9.Verify Account 10. List internships 11. Apply intern 12. List people")
  while(1==1):
   choice=0
   try:
@@ -154,6 +163,8 @@ def main():
    list_interns()
   elif choice == 11:
    apply_intern()
+  elif choice == 12:
+   list_ppl()
   else:
    return 0
 
