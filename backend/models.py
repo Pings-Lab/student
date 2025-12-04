@@ -54,8 +54,8 @@ class Internship(db.Model):
    iid = db.Column(db.String(20), primary_key=True)
    uid = db.Column(db.String(15), db.ForeignKey('auth.id'))
    cid = db.Column(db.String(5), db.ForeignKey('domains.id'))
-   finished = db.Column(db.Integer)
-   progress = db.Column(db.Integer)
+   finished = db.Column(db.Integer, default=False)
+   progress = db.Column(db.Integer, default=0)
    opted = db.Column(
         db.TIMESTAMP(timezone=True),
         server_default=func.now()

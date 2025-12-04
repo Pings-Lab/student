@@ -11,9 +11,20 @@ export interface Internship {
   view: string;
 }
 
+
+export interface appliedInternship {
+  id: string;
+  paid: boolean;
+  progress: number;
+  finished: boolean;
+  opted: Date;
+  status: string;
+  
+}
+
 interface InternshipStore {
   internships: Internship[];
-  myintern: Internship[];
+  myintern: appliedInternship[];
   loading: boolean;
   applyid: string;
   error: string | null;
@@ -22,7 +33,7 @@ interface InternshipStore {
 
   fetchInternships: () => Promise<void>;
   myInternships: () => Promise<boolean>;
-  applyInternship: (id: string) => Promise<boolean>;
+  applyInternship: (x: string) => Promise<boolean>;
   filterByCategory: (id: string) => Internship[];
   setApplyid: (id: string) => void;
 }
@@ -72,11 +83,11 @@ export const useInternshipStore = create<InternshipStore>((set, get) => ({
       return false;
     }
   },
-  applyInternship: async () => {
+  applyInternship: async (x: string) => {
       try {
       set({  error3: null });
-      const {applyid} = useInternshipStore()
-      const res = await apiStack.applyInternship(applyid); 
+      const data={"domain": x}
+      const res = await apiStack.applyInternship(data); 
     
 
       set({

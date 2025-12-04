@@ -23,11 +23,10 @@ def view_applied():
 
  output=[]
  for i in interns:
-  domain=Domains.query.get(i.cid)
-  a={"id": i.iid, "domain":domain.name, "stack": i.stack, "duration": i.duration, "status": i.status }
+  a={"id": i.cid, "paid":i.paid, "progress": i.progress, "finished": i.finished, "status": i.status, "opted": i.opted }
   output.append(a)
 
- return jsonify({"success": True, "message": "internships", "list": output}), 200
+ return jsonify({"success": True, "message": "internships", "data": output}), 200
 
 
 @intern_bp.route("/apply",methods=["POST"])

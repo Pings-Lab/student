@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useInternshipStore } from "../store/internStore";
 import './dashboard.css'
-import { TimerReset, BubblesIcon, X, CircleCheckBig } from "lucide-react";
+import { TimerReset, BubblesIcon, X, CircleCheckBig, BookmarkCheck } from "lucide-react";
 import { ToastContainer, toast } from 'react-toastify';
 import { useProfileStore } from '../store/profileStore'
 import { useNavigate } from "react-router-dom";
@@ -39,7 +39,7 @@ const Internship = () => {
       
             const res = await myInternships();   // wait until API finishes
             setgot(res);
-           if(!got)
+           if(!res)
            {
              toast(error2);
            }
@@ -98,7 +98,7 @@ const Internship = () => {
            }
            else{
             toast("Applied to internship");
-            console.log(res)
+            myinternlist()
            }
   }
   return (
@@ -111,7 +111,50 @@ const Internship = () => {
             )}
             {got && (
               <div className="slide">
-                
+               {myintern.map(x => {
+    const item = filterByCategory(x.id)[0]; // get the internship object
+
+    if (!item) return null; // safety check
+
+    return (
+      <div key={item.id} className="box">
+        <img src={item.view} alt={item.view} />
+        <h4>{item.type}</h4>
+
+        <div className="iinfos">
+          <p style={{ color: "greenyellow" }}>
+            <TimerReset /> {item.dur} month
+          </p>
+          <p style={{ color: "skyblue" }}>
+            <BubblesIcon /> {arr[item.cat]}
+          </p>
+        </div>
+        <div className="iinfos">
+          <p style={{ color: "lightgreen" }}>
+            <BookmarkCheck /> {x.status}
+          </p>
+          {x.status === "applied" && (
+            <p style={{ color: "skyblue" }}>
+            Progress: {x.progress}
+          </p>
+          )}
+          
+        </div>
+
+          {x.status !== "applied" && (
+        <button
+          onClick={() => {
+            selectItem(item.id);
+            setId(item.id);
+          }}
+        >
+          View
+        </button>
+          )}
+      </div>
+    );
+})}
+
             </div>
             )}
             
@@ -145,7 +188,7 @@ const Internship = () => {
 
 
             </div>
-             <ToastContainer />
+             
              {id !== "" && (
               <div id="apply">
                  <X style={{height: "5%", width: "5%", cursor: "pointer"}} color="white" onClick={()=>setId("")}/>
@@ -213,7 +256,7 @@ const Internship = () => {
                   ))}
              </div>
              )}
-             
+             <ToastContainer />
         </div>
    
   )
