@@ -133,9 +133,9 @@ const Internship = () => {
           <p style={{ color: "lightgreen" }}>
             <BookmarkCheck /> {x.status}
           </p>
-          {x.status === "applied" && (
-            <p style={{ color: "skyblue" }}>
-            Progress: {x.progress}
+          {x.status !== "applied" && (
+            <p style={{ color: "purple" }}>
+            Progress: {x.progress}%
           </p>
           )}
           
