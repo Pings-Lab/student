@@ -64,6 +64,7 @@ def signup():
  try:
   db.session.add(user)
   db.session.add(profile)
+  db.session.commit()
   db.session.add(alert)
   db.session.commit()
   return jsonify({"success": True, "msg": "account created successfully"}), 201

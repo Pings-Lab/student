@@ -30,7 +30,7 @@ const Alerts = () => {
            alerts.map(a => (
           <li key={a.id} className="notify">
            <p>
-            <Stars /> &nbsp;&nbsp;&nbsp;{a.date}&nbsp;&nbsp;
+            <Stars /> &nbsp;&nbsp;&nbsp;{a.recdate}&nbsp;&nbsp;
                {a.message}
           </p>
           {!a.read && (

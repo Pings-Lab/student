@@ -5,6 +5,7 @@ import { TimerReset, BubblesIcon, X, CircleCheckBig, BookmarkCheck } from "lucid
 import { ToastContainer, toast } from 'react-toastify';
 import { useProfileStore } from '../store/profileStore'
 import { useNavigate } from "react-router-dom";
+import { useAlertStore } from "../store/alertStore";
 
 export interface applyInternship {
   id: string;
@@ -24,6 +25,7 @@ const Internship = () => {
     const [got, setgot] = useState(false);
     const [id, setId] = useState("");
     const [selectedItem, setSelectedItem] = useState<applyInternship[]>([]);
+    const {fetchAlerts}=useAlertStore()
 
 
     const selectItem = (id: string) => {
@@ -99,6 +101,7 @@ const Internship = () => {
            else{
             toast("Applied to internship");
             myinternlist()
+            fetchAlerts()
            }
   }
   return (

@@ -16,7 +16,7 @@ from routes.alerts import alert_bp
 load_dotenv()
 def create_app(config_class=Config):
     app = Flask(__name__)
-    CORS(app, supports_credentials=True, origins=["http://127.0.0.1:3000"])
+    CORS(app, supports_credentials=True, origins=[os.getenv("TARGET")])
     app.config.from_object(config_class)
 
     handler = RotatingFileHandler(

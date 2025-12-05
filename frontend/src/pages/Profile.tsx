@@ -1,5 +1,6 @@
 import './dashboard.css'
 import { useProfileStore } from '../store/profileStore'
+import { useAlertStore } from '../store/alertStore';
 import { useEffect, useState } from 'react';
 import logo from '../assets/ping.jpg'
 import { ShieldCheck, Pencil } from 'lucide-react';
@@ -7,14 +8,15 @@ import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 
 const Profile = () => {
-    const {f_name, l_name, username, gender, country, edu, verified, dob, created, mobile, email, pin, error} = useProfileStore();
+    const {f_name, l_name, username, gender, country, edu, verified, dob, created, mobile, email, pin} = useProfileStore();
     const fetchProfile = useProfileStore((s) => s.fetchProfile);
-    const profile = useProfileStore((s) => s);
+   
+    const {fetchAlerts}=useAlertStore()
     const nav = useNavigate()  
       useEffect(() => {
         fetchProfile();
       }, []);
-    const {setDob, setEdu, setGender, setMobile, setPin, setUsername, changeUsername, changeProfile, setError} =useProfileStore()
+    const {setDob, setEdu, setGender, setMobile, setPin, setUsername, changeUsername, changeProfile} =useProfileStore()
     const [edit1, setedit1]= useState(true);
     const [edit2, setedit2]= useState(true);
     
@@ -25,7 +27,7 @@ const Profile = () => {
 
            
               toast(msg);
-             
+              fetchAlerts();
 
           
           setedit1(true);

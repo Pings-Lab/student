@@ -15,7 +15,7 @@ def view_alerts():
   return jsonify({"success": False, "msg":"unauthorized access"}), 401
 
 
- alerts=Alerts.query.filter_by(uid=id).all()
+ alerts=Alerts.query.filter_by(uid=id).order_by(Alerts.recdate.desc()).all()
  if not alerts:
   return jsonify({"success": False, "msg": "no alerts"}), 400
 
@@ -24,7 +24,7 @@ def view_alerts():
  for i in alerts:
   if i.read == False:
    new+=1
-  a={"id": i.alert_id, "message":i.message, "read": i.read, "date": i.recdate.strftime("%H:%M, %d-%m-%Y")}
+  a={"id": i.alert_id, "message":i.message, "read": i.read, "recdate": i.recdate.strftime("%H:%M, %d-%m-%Y")}
   output.append(a)
 
  return jsonify({"success": True, "message": "alerts", "data": output, "new": new}), 200

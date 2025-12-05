@@ -11,7 +11,7 @@ import { useAlertStore } from '../store/alertStore'
 const Navbar = () => {
     const [hover, setHover] = useState(false);
     const [clicked, setClicked] = useState(false);
-    const {tab ,setTab} = useTab();
+    const {setTab} = useTab();
     const {newcount, fetchAlerts}= useAlertStore();
     const navigate = useNavigate();
     const { logout } = useAuth();

@@ -94,7 +94,7 @@ export const useInternshipStore = create<InternshipStore>((set, get) => ({
         applyid: ""  
       
       });
-      return true;
+      return res.data.success;
     } catch (err: any) {
       set({
         error3: err.response?.data?.msg || "Failed to load internships",

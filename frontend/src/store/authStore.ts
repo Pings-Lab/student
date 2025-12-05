@@ -70,7 +70,7 @@ const useAuth = create<AuthState>()(
        checkAuth: async () => {
         try {
           const res = await apiStack.getUser(); // IMPORTANT
-          set({ isAuthenticated: true });
+          set({ isAuthenticated: res.data.success });
         } catch (err) {
           set({ isAuthenticated: false });
         }
@@ -78,7 +78,7 @@ const useAuth = create<AuthState>()(
       emailOtp: async () => {
         try {
           const res = await apiStack.getOtp();
-          
+          return res.data.success
         } catch (err: any) {
           set({
              message: err.response?.data?.msg || "something went wrong"
@@ -95,7 +95,7 @@ const useAuth = create<AuthState>()(
              message: "Account verified"
           });
          
-
+         return res.data.success
           
         } catch (err: any) {
           set({

@@ -3,32 +3,32 @@ import apiStack from "../api/apiStack";
 
 interface ProfileState {
   f_name: string | " ";
-  l_name: String | " ";
-  username: String | " ";
-  gender: String | " ";
-  country: String | " ";
-  pin: String | " ";
-  edu: String | " ";
-  dob: String ;
-  created: Date ;
-  email: String | " ";
-  mobile: String | " ";
+  l_name: string | " ";
+  username: string | " ";
+  gender: string | " ";
+  country: string | " ";
+  pin: string | " ";
+  edu: string | " ";
+  dob: string ;
+  created: string ;
+  email: string | " ";
+  mobile: string | " ";
   verified: boolean;
   loading: boolean;
-  error: String | null;
+  error: string | null;
   
 
   fetchProfile: () => Promise<void>;
-  changeUsername: () => Promise<String>;
-  changeProfile: () => Promise<String>;
-  setUsername: (v: String) => void;
-  setGender: (v: String) => void;
-  setPin: (v: String) => void;
-  setMobile: (v: String) => void;
-  setEdu: (v: String) => void;
-  setDob: (v: String) => void;
+  changeUsername: () => Promise<string>;
+  changeProfile: () => Promise<string>;
+  setUsername: (v: string) => void;
+  setGender: (v: string) => void;
+  setPin: (v: string) => void;
+  setMobile: (v: string) => void;
+  setEdu: (v: string) => void;
+  setDob: (v: string) => void;
   setVerified: (v: boolean) => void;
-  setError: (v: String | null) => void;
+  setError: (v: string | null) => void;
 }
 
 export const useProfileStore = create<ProfileState>((set, get) => ({
@@ -49,6 +49,7 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
   loading: false,
   error: null,
   setUsername: (v) => set({ username: v }),
+  setVerified: (v) => set({ verified: v }),
   setGender: (v) => set({ gender: v }),
   setPin: (v) => set({ pin: v }),
   setMobile: (v) => set({ mobile: v }),
@@ -92,7 +93,7 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
         try {
           
           const res = await apiStack.c_username({ username });
-          return "username changed successfully";
+          return res.data.msg;
         } catch (err: any) {
           set({
             
@@ -108,7 +109,7 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
         try {
           
           const res = await apiStack.c_profile({ mobile, gender, pin, edu, dob });
-          return "Profile updated successfully"
+          return res.data.msg;
         } catch (err: any) {
           set({
            

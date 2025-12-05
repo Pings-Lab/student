@@ -5,7 +5,7 @@ export interface alerts{
 id: string ,
 message: string,
 read: boolean,
-date: Date,
+recdate:  string,
 
 }
 
@@ -20,7 +20,7 @@ interface alertState {
 }
 
 
-export const useAlertStore = create<alertState>((set, get) => ({
+export const useAlertStore = create<alertState>((set) => ({
   got: false,
   error: "",
   alerts: [],
@@ -51,7 +51,7 @@ export const useAlertStore = create<alertState>((set, get) => ({
 
       const res = await apiStack.markAlert(load); // GET /internships
 
-      return true;
+      return res.data.success;
     } catch (err: any) {
       return false;
     }
