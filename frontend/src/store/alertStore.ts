@@ -2,7 +2,7 @@ import { create } from "zustand";
 import apiStack from "../api/apiStack";
 
 export interface alerts{
-alert_id: string ,
+id: string ,
 message: string,
 read: boolean,
 date: Date,

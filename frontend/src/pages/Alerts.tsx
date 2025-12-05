@@ -28,13 +28,13 @@ const Alerts = () => {
         <ul className="note-box">
           {got && (
            alerts.map(a => (
-          <li key={a.alert_id} className="notify">
+          <li key={a.id} className="notify">
            <p>
             <Stars /> &nbsp;&nbsp;&nbsp;
                {a.message}
           </p>
           {!a.read && (
-            <button onClick={()=>markread(a.alert_id)}><Check /></button>
+            <button onClick={()=>markread(a.id)}><Check /></button>
           )}
           
          </li>
