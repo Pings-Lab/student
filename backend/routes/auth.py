@@ -38,7 +38,7 @@ def signup():
   return jsonify({"success": False, "msg": "email is already registered"}), 400
  id=str(uuid.uuid4())
  user=Auth(
-  id=id[:14],
+  id=id[:15],
   f_name=f_name,
   l_name=l_name,
   mobile=mobile,
@@ -47,8 +47,8 @@ def signup():
  )
 
  profile=Profile(
-  id=id[:14],
-  username=f_name+l_name,
+  id=id[:15],
+  username=f_name+mobile[:3],
   gender="m",
   country="India",
   pin="582102",
