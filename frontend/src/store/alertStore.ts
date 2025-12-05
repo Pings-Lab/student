@@ -13,6 +13,7 @@ interface alertState {
   alerts: alerts[];
   got: boolean | false;
   error: string | null;
+  newcount: number;
 
   fetchAlerts: () => Promise<void>;
   markAlert: (x: string) => Promise<boolean>;
@@ -23,15 +24,17 @@ export const useAlertStore = create<alertState>((set, get) => ({
   got: false,
   error: "",
   alerts: [],
+  newcount: 0,
 
   fetchAlerts: async () => {
     try {
-      set({ error: null });
+      set({ error: null, newcount: 0 });
 
       const res = await apiStack.seeAlerts(); // GET /internships
 
       set({
         alerts: res.data.data,   // expect backend sends array
+        newcount: res.data.new,
         got: true,
       });
     } catch (err: any) {

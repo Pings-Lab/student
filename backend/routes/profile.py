@@ -2,9 +2,9 @@ from flask import Blueprint, request, jsonify
 from utils.validators import valid_pass, valid_mobile
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from extension import db
-from models import Auth, Profile
+from models import Auth, Profile, Alerts
 from utils.password import hash_password, verify_password
-import json
+import json, uuid
 from datetime import datetime
 
 profile_bp = Blueprint('profile',__name__,url_prefix="/api/v1/profile")
@@ -34,8 +34,15 @@ def username():
  if names:
   return jsonify({"success": False, "msg": "username is already taken"}), 400
 
+ alert=Alerts(
+ alert_id=str(uuid.uuid4())[:20],
+ message=f"Username changed to {name}",
+ uid=token["id"]
+ )
+
  try:
   profile.username = name
+  db.session.add(alert)
   db.session.commit()
   return jsonify({"success": True, "msg": "username changed"}), 200
  except Exception as e:
@@ -68,8 +75,15 @@ def password():
  if old_pass==new_pass:
   return jsonify({"success": False, "msg": "new password cannot old password"}), 400
 
+ alert=Alerts(
+ alert_id=str(uuid.uuid4())[:20],
+ message="password changed successfully",
+ uid=id[:15]
+ )
+
  try:
   user.password = hash_password(new_pass)
+  db.session.add(alert)
   db.session.commit()
   return jsonify({"success": True, "msg": "password changed"}), 200
  except Exception as e:
@@ -168,7 +182,14 @@ def verify():
  if profile.verified == True:
   return jsonify({"success": True, "msg": "Account already verified"}), 200
 
+ alert=Alerts(
+ alert_id=str(uuid.uuid4())[:20],
+ message="Account got verified",
+ uid=id[:15]
+ )
+
  profile.verified = True
+ db.session.add(alert)
  db.session.commit()
  return jsonify({"success":True, "msg":"account verified"}), 200
 
@@ -192,6 +213,7 @@ def get_info():
  infobox={"l_name": auth.l_name, "f_name": auth.f_name,"username": profile.username, "gender": profile.gender, "country": profile.country, "dob": dob, "verified": profile.verified, "edu": profile.edu, "mobile": auth.mobile, "email": auth.email, "created": created, "pin": profile.pin}
  return jsonify({"success": True, "message": "user data", "data": infobox}), 200
 
+#fetch people
 @profile_bp.route("/people", methods=["GET"])
 @jwt_required()
 def list_ppl():

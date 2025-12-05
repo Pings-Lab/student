@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify, make_response
 import json, uuid
 from utils.validators import valid_mobile, valid_email, valid_pass
-from models import Auth, Profile
+from models import Auth, Profile, Alerts
 from extension import db
 from utils.password import hash_password, verify_password
 from flask_jwt_extended import create_access_token, set_access_cookies, jwt_required, get_jwt_identity, unset_access_cookies
@@ -55,9 +55,16 @@ def signup():
   edu="ABCD",
   dob="2000-01-01"
  )
+
+ alert=Alerts(
+ alert_id=str(uuid.uuid4())[:20],
+ message="Account got created, go to profile and verify your account",
+ uid=id[:15]
+ )
  try:
   db.session.add(user)
   db.session.add(profile)
+  db.session.add(alert)
   db.session.commit()
   return jsonify({"success": True, "msg": "account created successfully"}), 201
  except Exception as e:

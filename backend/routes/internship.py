@@ -1,7 +1,7 @@
 from flask import jsonify, Blueprint, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 import json, uuid
-from models import Profile, Internship, Domains
+from models import Profile, Internship, Domains, Alerts
 from extension import db
 intern_bp=Blueprint("intern",__name__,url_prefix="/api/v1/internship")
 
@@ -64,8 +64,15 @@ def apply_intern():
   uid=id,
  )
 
+ alert=Alerts(
+ alert_id=str(uuid.uuid4())[:20],
+ message=f"Applied to {domain.type} internship. Please wait for approval.",
+ uid=id[:15]
+ )
+
  try:
   db.session.add(new)
+  db.session.add(alert)
   db.session.commit()
   return jsonify({"success": True, "msg":"applied to internship successfully"}), 201
  except Exception as e:

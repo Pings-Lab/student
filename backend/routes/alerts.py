@@ -20,11 +20,14 @@ def view_alerts():
   return jsonify({"success": False, "msg": "no alerts"}), 400
 
  output=[]
+ new =0
  for i in alerts:
-  a={"id": i.alert_id, "message":i.message, "read": i.read, "date": i.recdate}
+  if i.read == False:
+   new+=1
+  a={"id": i.alert_id, "message":i.message, "read": i.read, "date": i.recdate.strftime("%H:%M, %d-%m-%Y")}
   output.append(a)
 
- return jsonify({"success": True, "message": "alerts", "data": output}), 200
+ return jsonify({"success": True, "message": "alerts", "data": output, "new": new}), 200
 
 @alert_bp.route("/read",methods=["PUT"])
 @jwt_required()
