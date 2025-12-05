@@ -4,6 +4,9 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 from config import Config
 from extension import db, jwt
+import logging
+from logging.handlers import RotatingFileHandler
+
 from routes.auth import auth_bp
 from routes.profile import profile_bp
 from routes.domains import domains_bp
@@ -15,6 +18,15 @@ def create_app(config_class=Config):
     app = Flask(__name__)
     CORS(app, supports_credentials=True, origins=["http://127.0.0.1:3000"])
     app.config.from_object(config_class)
+
+    handler = RotatingFileHandler(
+    "app.log",
+    maxBytes=5*1024*1024,  # 5 MB per file
+    backupCount=5          # keep last 5 logs
+   )
+    handler.setLevel(logging.ERROR)
+
+    app.logger.addHandler(handler)
 
     db.init_app(app)
     jwt.init_app(app)

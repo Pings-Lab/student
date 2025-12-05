@@ -118,7 +118,7 @@ const Internship = () => {
 
     return (
       <div key={item.id} className="box">
-        <img src={item.view} alt={item.view} />
+        <img src={item.view} alt={item.name} />
         <h4>{item.type}</h4>
 
         <div className="iinfos">
@@ -175,7 +175,7 @@ const Internship = () => {
   .filter(item => item.name === dom)
   .map(item => (
     <div key={item.id} className="box">
-      <img src={item.view} alt={item.view} />
+      <img src={item.view} alt={item.name} />
       <h4>{item.type}</h4>
       <div className="iinfos">
         <p style={{color: "greenyellow"}}><TimerReset/>{item.dur}month</p>
