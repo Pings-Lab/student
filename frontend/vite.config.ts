@@ -6,5 +6,10 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 3000,
+    allowedHosts:[
+      'localhost',
+      'student-1-5usy.onrender.com',
+      '127.0.0.1'
+    ]
   },
 })
