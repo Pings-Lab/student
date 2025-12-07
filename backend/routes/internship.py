@@ -44,34 +44,31 @@ def apply_intern():
  try:
   data=request.json
   cid=data["domain"].strip()
- except Exception as e:
-  return jsonify({"success": False, "msg":f"missing input parameters {e}"}), 401
 
- interns=Internship.query.filter_by(uid=id).all()
+  interns=Internship.query.filter_by(uid=id).all()
 
- if interns:
-  for i in interns:
-   if cid==i.cid:
+  if interns:
+   for i in interns:
+    if cid==i.cid:
      return jsonify({"success": False, "msg":"you have already enrolled for this internship"}), 401
 
- domain=Domains.query.get(cid)
- if not domain:
-  return jsonify({"success": False, "msg":"invalid internship name"}), 401
+  domain=Domains.query.get(cid)
+  if not domain:
+   return jsonify({"success": False, "msg":"invalid internship name"}), 401
 
- iid=gen_id(20)
- new=Internship(
-  iid=iid,
-  cid=cid,
-  uid=id,
- )
+  iid=gen_id(20)
+  new=Internship(
+   iid=iid,
+   cid=cid,
+   uid=id,
+  )
 
- alert=Alerts(
- alert_id=gen_id(20),
- message=f"Applied to {domain.type} internship. Please wait for approval.",
- uid=id
- )
+  alert=Alerts(
+  alert_id=gen_id(20),
+  message=f"Applied to {domain.type} internship. Please wait for approval.",
+  uid=id
+  )
 
- try:
   db.session.add(new)
   db.session.add(alert)
   db.session.commit()

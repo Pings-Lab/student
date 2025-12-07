@@ -41,23 +41,20 @@ def mark_read():
  try:
   data=request.json
   aid=data["id"].strip()
- except Exception as e:
-  return jsonify({"success": False, "msg": "invalid request"}), 400
 
- if len(aid) == 20:
-  alert=Alerts.query.get(aid)
-  if not alert:
-   return jsonify({"success": False, "msg": "invalid request"}), 400
-  elif alert.read == True:
-   return jsonify({"success": False, "msg": "invalid request"}), 400
-  else:
-    try:
+  if len(aid) == 20:
+   alert=Alerts.query.get(aid)
+   if not alert:
+    return jsonify({"success": False, "msg": "invalid request"}), 400
+   elif alert.read == True:
+    return jsonify({"success": False, "msg": "invalid request"}), 400
+   else:
       alert.read = True
       db.session.commit()
       return jsonify({"success": True, "msg": "message marked as read"}), 201
-    except Exception as e:
-      return jsonify({"success": False, "msg": "something went wrong"}), 500
- else:
-   return jsonify({"success": False, "msg": "invalid request"}), 400
+  else:
+    return jsonify({"success": False, "msg": "invalid request"}), 400
 
- return jsonify({"success": False, "msg": "something went wrong"}), 500
+  return jsonify({"success": False, "msg": "something went wrong"}), 500
+ except Exception as e:
+  return jsonify({"success": False, "msg": "something went wrong"}), 500

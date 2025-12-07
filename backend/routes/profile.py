@@ -23,25 +23,22 @@ def username():
  try:
   data=request.json
   name=data["username"].strip()
- except Exception as e:
-  return jsonify({"success": False, "msg": "missing input parameters"}), 400
 
- if len(name) < 3 or len(name) >20:
+  if len(name) < 3 or len(name) >20:
    return jsonify({"success": False, "msg": "username should be less than 20 chars and more than 3 chars."}), 400
 
- if profile.username == name:
+  if profile.username == name:
    return jsonify({"success": False, "msg": "this is your current username"}), 400
- names=Profile.query.filter_by(username=name).first()
- if names:
-  return jsonify({"success": False, "msg": "username is already taken"}), 400
+  names=Profile.query.filter_by(username=name).first()
+  if names:
+   return jsonify({"success": False, "msg": "username is already taken"}), 400
 
- alert=Alerts(
- alert_id=gen_id(20),
- message=f"Username changed to {name}",
- uid=token["id"]
- )
+  alert=Alerts(
+  alert_id=gen_id(20),
+  message=f"Username changed to {name}",
+  uid=token["id"]
+  )
 
- try:
   profile.username = name
   db.session.add(alert)
   db.session.commit()
@@ -64,25 +61,22 @@ def password():
   data=request.json
   old_pass=data["current_pass"].strip()
   new_pass=data["new_pass"].strip()
- except Exception as e:
-  return jsonify({"success": False, "msg": "missing parameters"}), 400
 
- if not valid_pass(new_pass):
-  return jsonify({"success": False, "msg": "weak password"}), 400
+  if not valid_pass(new_pass):
+   return jsonify({"success": False, "msg": "weak password"}), 400
 
- if not verify_password(old_pass, user.password):
-  return jsonify({"success": False, "msg": "incorrect password"}), 400
+  if not verify_password(old_pass, user.password):
+   return jsonify({"success": False, "msg": "incorrect password"}), 400
 
- if old_pass==new_pass:
-  return jsonify({"success": False, "msg": "new password cannot old password"}), 400
+  if old_pass==new_pass:
+   return jsonify({"success": False, "msg": "new password cannot old password"}), 400
 
- alert=Alerts(
- alert_id=gen_id(20),
- message="password changed successfully",
- uid=id
- )
+  alert=Alerts(
+  alert_id=gen_id(20),
+  message="password changed successfully",
+  uid=id
+  )
 
- try:
   user.password = hash_password(new_pass)
   db.session.add(alert)
   db.session.commit()
@@ -115,33 +109,27 @@ def info():
   pin=data["pin"].strip()
   dob=data["dob"].strip()
   gender=data["gender"].strip()
- except Exception as e:
-  return jsonify({"success": False, "msg": "missing parameters"}), 400
 
- try:
-    dob_date = datetime.strptime(dob, "%Y-%m-%d")
- except ValueError:
-    return jsonify({"success": False, "msg": "invalid date format"}), 400
+  dob_date = datetime.strptime(dob, "%Y-%m-%d")
 
- min_date = datetime.strptime("1995-01-01", "%Y-%m-%d")
- max_date = datetime.strptime("2007-01-01", "%Y-%m-%d")
+  min_date = datetime.strptime("1995-01-01", "%Y-%m-%d")
+  max_date = datetime.strptime("2007-01-01", "%Y-%m-%d")
 
- if len(edu) < 4 or len(edu) > 60:
-  return jsonify({"success": False, "msg": "invalid university name"}), 400
+  if len(edu) < 4 or len(edu) > 60:
+   return jsonify({"success": False, "msg": "invalid university name"}), 400
 
- if len(pin) != 6:
-  return jsonify({"success": False, "msg": "invalid pin"}), 400
+  if len(pin) != 6:
+   return jsonify({"success": False, "msg": "invalid pin"}), 400
 
- if not (min_date <= dob_date <= max_date):
-  return jsonify({"success": False, "msg": "you are not eligible for this internship"}), 400
+  if not (min_date <= dob_date <= max_date):
+   return jsonify({"success": False, "msg": "you are not eligible for this internship"}), 400
 
- gen="mftl"
- if gender not in gen:
-  return jsonify({"success": False, "msg": "invalid gender identity"}), 400
+  gen="mftl"
+  if gender not in gen:
+   return jsonify({"success": False, "msg": "invalid gender identity"}), 400
 
- if not valid_mobile(mobile):
-  return jsonify({"success": False, "msg": "invalid mobile format"}), 400
- try:
+  if not valid_mobile(mobile):
+   return jsonify({"success": False, "msg": "invalid mobile format"}), 400
   profile.edu = edu
   profile.pin = pin
   profile.dob = dob_date
@@ -151,7 +139,7 @@ def info():
   return jsonify({"success": True, "msg": "profile updated"}), 201
  except Exception as e:
   print(e)
-  return jsonify({"success": False, "msg": "something went wrong"}), 400
+  return jsonify({"success": False, "msg": "something went wrong"}), 500
 
 #get otp
 @profile_bp.route("/verify", methods=["GET"])
@@ -182,17 +170,19 @@ def verify():
 
  if profile.verified == True:
   return jsonify({"success": True, "msg": "Account already verified"}), 200
+ try:
+  alert=Alerts(
+  alert_id=gen_id(20),
+  message="Account got verified",
+  uid=id
+  )
 
- alert=Alerts(
- alert_id=gen_id(20),
- message="Account got verified",
- uid=id
- )
-
- profile.verified = True
- db.session.add(alert)
- db.session.commit()
- return jsonify({"success":True, "msg":"account verified"}), 200
+  profile.verified = True
+  db.session.add(alert)
+  db.session.commit()
+  return jsonify({"success":True, "msg":"account verified"}), 200
+ except Exception as e:
+  return jsonify({"success": False, "msg": "something went wrong"}), 500
 
 #get profile info
 @profile_bp.route("/info", methods=["GET"])

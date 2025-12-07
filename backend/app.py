@@ -34,7 +34,7 @@ def create_app(config_class=Config):
     )
 
     # Logging setup
-    handler = RotatingFileHandler("app.log", maxBytes=5 * 1024 * 1024, backupCount=5)
+    handler = RotatingFileHandler("/home/pradeep/Documents/student/backend/app.log", maxBytes=5 * 1024 * 1024, backupCount=5)
     handler.setLevel(logging.ERROR)
     app.logger.addHandler(handler)
 
