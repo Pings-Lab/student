@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, make_response
+from flask import Blueprint, request, jsonify, make_response, current_app
 import json
 from utils.validators import valid_mobile, valid_email, valid_pass
 from models import Auth, Profile, Alerts
@@ -67,7 +67,7 @@ def signup():
   db.session.commit()
   return jsonify({"success": True, "msg": "account created successfully"}), 201
  except Exception as e:
-  app.logger.error(f"Failed: {e}", exc_info=True)
+  current_app.logger.error(f"Failed: {e}", exc_info=True)
   return jsonify({"success": False, "msg": "something went wrong"}), 500
 
 
@@ -98,7 +98,7 @@ def login():
   set_access_cookies(response, access_token)
   return response
  except Exception as e:
-   app.logger.error(f"Failed: {e}", exc_info=True)
+   current_app.logger.error(f"Failed: {e}", exc_info=True)
    return jsonify({"success": False, "msg": "something went wrong"}), 500
 #login state API
 @auth_bp.route("/state",methods=["GET"])
@@ -130,7 +130,7 @@ def forgot():
    return jsonify({"success": False, "msg": "account not found"}), 400
   return jsonify({"success": True, "msg": "recovery email sent"}), 200
  except Exception as e:
-  app.logger.error(f"Failed: {e}", exc_info=True)
+  current_app.logger.error(f"Failed: {e}", exc_info=True)
   return jsonify({"success": False, "msg": "something went wrong"}), 500
 
 #logout API

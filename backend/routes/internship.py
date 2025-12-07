@@ -1,4 +1,4 @@
-from flask import jsonify, Blueprint, request
+from flask import jsonify, Blueprint, request, current_app
 from flask_jwt_extended import jwt_required, get_jwt_identity
 import json
 from utils.id_gen import gen_id
@@ -8,7 +8,7 @@ intern_bp=Blueprint("intern",__name__,url_prefix="/api/v1/internship")
 
 @intern_bp.route("/list",methods=["GET"])
 @jwt_required()
-def view_applied():
+def view_current_applied():
  id=json.loads(get_jwt_identity())
  id=id["id"]
  profile=Profile.query.get(id)
@@ -25,14 +25,14 @@ def view_applied():
  output=[]
  for i in interns:
   a={"id": i.cid, "paid":i.paid, "progress": i.progress, "finished": i.finished, "status": i.status, "opted": i.opted }
-  output.append(a)
+  output.current_append(a)
 
  return jsonify({"success": True, "message": "internships", "data": output}), 200
 
 
 @intern_bp.route("/apply",methods=["POST"])
 @jwt_required()
-def apply_intern():
+def current_apply_intern():
  id=json.loads(get_jwt_identity())
  id=id["id"]
  profile=Profile.query.get(id)
@@ -65,7 +65,7 @@ def apply_intern():
 
   alert=Alerts(
   alert_id=gen_id(20),
-  message=f"Applied to {domain.type} internship. Please wait for approval.",
+  message=f"applied to {domain.type} internship. Please wait for approval.",
   uid=id
   )
 
@@ -74,5 +74,5 @@ def apply_intern():
   db.session.commit()
   return jsonify({"success": True, "msg":"applied to internship successfully"}), 201
  except Exception as e:
-  app.logger.error(f"Failed: {e}", exc_info=True)
+  current_app.logger.error(f"Failed: {e}", exc_info=True)
   return jsonify({"success": False, "msg": f"something went wrong {e}"}), 500

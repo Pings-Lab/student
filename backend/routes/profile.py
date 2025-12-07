@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, current_app
 from utils.validators import valid_pass, valid_mobile
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from extension import db
@@ -44,7 +44,7 @@ def username():
   db.session.commit()
   return jsonify({"success": True, "msg": "username changed"}), 200
  except Exception as e:
-  app.logger.error(f"Failed: {e}", exc_info=True)
+  current_app.logger.error(f"Failed: {e}", exc_info=True)
   return jsonify({"success": False, "msg": "something went wrong"}), 400
 
 # Password change API
@@ -83,7 +83,7 @@ def password():
   db.session.commit()
   return jsonify({"success": True, "msg": "password changed"}), 200
  except Exception as e:
-  app.logger.error(f"Failed: {e}", exc_info=True)
+  current_app.logger.error(f"Failed: {e}", exc_info=True)
   return jsonify({"success": False, "msg": "something went wrong"}), 500
 
 # Info change API
@@ -140,7 +140,7 @@ def info():
   db.session.commit()
   return jsonify({"success": True, "msg": "profile updated"}), 201
  except Exception as e:
-  app.logger.error(f"Failed: {e}", exc_info=True)
+  current_app.logger.error(f"Failed: {e}", exc_info=True)
   return jsonify({"success": False, "msg": "something went wrong"}), 500
 
 #get otp
@@ -184,7 +184,7 @@ def verify():
   db.session.commit()
   return jsonify({"success":True, "msg":"account verified"}), 200
  except Exception as e:
-  app.logger.error(f"Failed: {e}", exc_info=True)
+  current_app.logger.error(f"Failed: {e}", exc_info=True)
   return jsonify({"success": False, "msg": "something went wrong"}), 500
 
 #get profile info
@@ -227,6 +227,6 @@ def list_ppl():
  for d in ppl:
   pacc=Auth.query.get(d.id)
   temp={ "username": d.username, "gender": d.gender, "country": d.country, "verified": d.verified, "name": f"{pacc.f_name} {pacc.l_name}", "joined": pacc.created.strftime("%Y-%m-%d"), "college": d.edu}
-  output.append(temp)
+  output.current_append(temp)
 
  return jsonify({"success": True, "msg": "users list", "data": output}), 200

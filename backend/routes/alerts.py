@@ -1,4 +1,4 @@
-from flask import jsonify, Blueprint, request
+from flask import jsonify, Blueprint, request, current_app
 from flask_jwt_extended import jwt_required, get_jwt_identity
 import json
 from models import Profile, Alerts
@@ -57,5 +57,5 @@ def mark_read():
 
   return jsonify({"success": False, "msg": "something went wrong"}), 500
  except Exception as e:
-  app.logger.error(f"Failed: {e}", exc_info=True)
+  current_app.logger.error(f"Failed: {e}", exc_info=True)
   return jsonify({"success": False, "msg": "something went wrong"}), 500
