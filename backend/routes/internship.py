@@ -1,6 +1,7 @@
 from flask import jsonify, Blueprint, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
-import json, uuid
+import json
+from utils.id_gen import gen_id
 from models import Profile, Internship, Domains, Alerts
 from extension import db
 intern_bp=Blueprint("intern",__name__,url_prefix="/api/v1/internship")
@@ -57,17 +58,17 @@ def apply_intern():
  if not domain:
   return jsonify({"success": False, "msg":"invalid internship name"}), 401
 
- iid=str(uuid.uuid4())
+ iid=gen_id(20)
  new=Internship(
-  iid=iid[:20],
+  iid=iid,
   cid=cid,
   uid=id,
  )
 
  alert=Alerts(
- alert_id=str(uuid.uuid4())[:20],
+ alert_id=gen_id(20),
  message=f"Applied to {domain.type} internship. Please wait for approval.",
- uid=id[:15]
+ uid=id
  )
 
  try:

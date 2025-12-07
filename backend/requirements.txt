@@ -3,7 +3,7 @@ flask_cors
 dotenv
 flask_SQLAlchemy
 psycopg2-binary
-uuid
+shortuuid
 flask-bcrypt
 flask_jwt_extended
 requests

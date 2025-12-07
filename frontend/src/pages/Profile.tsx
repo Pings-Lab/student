@@ -121,8 +121,14 @@ const Profile = () => {
                     <input type="text" value={mobile} disabled={edit2} onChange={(e) => setMobile(e.target.value)}/>
                 </div>
                 <div>
-                    <p>Gender: </p>
-                    <input type="text" value={gender} disabled={edit2} onChange={(e) => setGender(e.target.value)}/>
+                    <p>Gender:</p>
+<select value={gender} disabled={edit2} onChange={(e) => setGender(e.target.value)}>
+    <option value="">Select gender</option>
+    <option value="m">Male</option>
+    <option value="f">Female</option>
+    <option value="o">Other</option>
+</select>
+
                 </div>
                 <div>
                     <p>PIN: </p>

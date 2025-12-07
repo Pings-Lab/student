@@ -4,7 +4,8 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from extension import db
 from models import Auth, Profile, Alerts
 from utils.password import hash_password, verify_password
-import json, uuid
+import json
+from utils.id_gen import gen_id
 from datetime import datetime
 
 profile_bp = Blueprint('profile',__name__,url_prefix="/api/v1/profile")
@@ -35,7 +36,7 @@ def username():
   return jsonify({"success": False, "msg": "username is already taken"}), 400
 
  alert=Alerts(
- alert_id=str(uuid.uuid4())[:20],
+ alert_id=gen_id(20),
  message=f"Username changed to {name}",
  uid=token["id"]
  )
@@ -76,9 +77,9 @@ def password():
   return jsonify({"success": False, "msg": "new password cannot old password"}), 400
 
  alert=Alerts(
- alert_id=str(uuid.uuid4())[:20],
+ alert_id=gen_id(20),
  message="password changed successfully",
- uid=id[:15]
+ uid=id
  )
 
  try:
@@ -183,9 +184,9 @@ def verify():
   return jsonify({"success": True, "msg": "Account already verified"}), 200
 
  alert=Alerts(
- alert_id=str(uuid.uuid4())[:20],
+ alert_id=gen_id(20),
  message="Account got verified",
- uid=id[:15]
+ uid=id
  )
 
  profile.verified = True
@@ -232,7 +233,7 @@ def list_ppl():
  output=[]
  for d in ppl:
   pacc=Auth.query.get(d.id)
-  temp={ "username": d.username, "gender": d.gender, "country": d.country, "verified": d.verified, "name": f"{pacc.f_name} {pacc.l_name}", "joined": pacc.created.strftime("%Y-%m-%d")}
+  temp={ "username": d.username, "gender": d.gender, "country": d.country, "verified": d.verified, "name": f"{pacc.f_name} {pacc.l_name}", "joined": pacc.created.strftime("%Y-%m-%d"), "college": d.edu}
   output.append(temp)
 
  return jsonify({"success": True, "msg": "users list", "data": output}), 200

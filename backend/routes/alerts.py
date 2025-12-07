@@ -1,6 +1,6 @@
 from flask import jsonify, Blueprint, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
-import json, uuid
+import json
 from models import Profile, Alerts
 from extension import db
 alert_bp=Blueprint("alerts",__name__,url_prefix="/api/v1/alerts")

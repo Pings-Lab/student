@@ -1,9 +1,10 @@
 from flask import Blueprint, request, jsonify, make_response
-import json, uuid
+import json
 from utils.validators import valid_mobile, valid_email, valid_pass
 from models import Auth, Profile, Alerts
 from extension import db
 from utils.password import hash_password, verify_password
+from utils.id_gen import gen_id
 from flask_jwt_extended import create_access_token, set_access_cookies, jwt_required, get_jwt_identity, unset_access_cookies
 
 auth_bp=Blueprint('auth',__name__,url_prefix="/api/v1")
@@ -36,9 +37,9 @@ def signup():
  user=Auth.query.filter_by(email=email).first()
  if user:
   return jsonify({"success": False, "msg": "email is already registered"}), 400
- id=str(uuid.uuid4())
+ id=gen_id(15)
  user=Auth(
-  id=id[:15],
+  id=id,
   f_name=f_name,
   l_name=l_name,
   mobile=mobile,
@@ -47,7 +48,7 @@ def signup():
  )
 
  profile=Profile(
-  id=id[:15],
+  id=id,
   username=f_name+mobile[:3],
   gender="m",
   country="India",
@@ -57,9 +58,9 @@ def signup():
  )
 
  alert=Alerts(
- alert_id=str(uuid.uuid4())[:20],
+ alert_id=gen_id(20),
  message="Account got created, go to profile and verify your account",
- uid=id[:15]
+ uid=id
  )
  try:
   db.session.add(user)
