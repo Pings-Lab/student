@@ -71,7 +71,7 @@ def info():
  payload ={
    "edu": "VTU Belagavi",
    "pin": "582102",
-   "dob": "03-12-2003",
+   "dob": "2003-12-03",
    "gender": "m",
    "mobile": "1234567890"
  }
@@ -152,8 +152,25 @@ def mark_read():
 
  print("\n-----------------------------------\n")
 
+#list my projects
+def my_pro:
+ print("15. My Projects\n")
+ response = session.get(url+"/project/myprojects")
+ print("result: "+response.text+" "+str(response.status_code))
+
+ print("\n-----------------------------------\n")
+
+# create project
+def create_pro:
+ print("15. Create Project\n")
+ payload={"name": "some project", "summary":"testing","type":"public", "domain":"pr001"}
+ response = session.post(url+"/project/create", json=payload)
+ print("result: "+response.text+" "+str(response.status_code))
+
+ print("\n-----------------------------------\n")
+
 def main():
- print("1.Login 2.State 3.Forgot 4.Change_pass 5.Chnage_name 6.info 7.dom_list 8.Send OTP 9.Verify Account 10. List internships 11. Apply intern 12. List people 13. List alerts 14. Mark read")
+ print("1.Login 2.State 3.Forgot 4.Change_pass 5.Chnage_name 6.info 7.dom_list 8.Send OTP 9.Verify Account 10. List internships 11. Apply intern 12. List people 13. List alerts 14. Mark read 15. My Projects 16. Create Project")
  while(1==1):
   choice=0
   try:
@@ -191,6 +208,10 @@ def main():
    list_alerts()
   elif choice == 14:
    mark_read()
+  elif choice == 15:
+   my_pro()
+  elif choice == 16:
+   create_pro()
   else:
    return 0
 

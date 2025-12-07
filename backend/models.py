@@ -77,4 +77,21 @@ class Alerts(db.Model):
     read = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
-        return f"<Domains {self.alert_id}"
+        return f"<Alerts {self.alert_id}"
+
+class Project(db.Model):
+    __tablename__ = 'projects'
+    pro_id = db.Column(db.String(20), primary_key=True)
+    creator_id = db.Column(db.String(15), db.ForeignKey('auth.id'))
+    name = db.Column(db.String(30))
+    domain = db.Column(db.String(5), db.ForeignKey('domains.id'))
+    summary = db.Column(db.String(150))
+    createdate = db.Column(
+        db.TIMESTAMP(timezone=True),
+        server_default=func.now()
+    )
+    type = db.Column(db.String(10), default='private')
+    status = db.Column(db.Boolean, default=True)
+
+    def __repr__(self):
+        return f"<Project {self.pro_id}"
