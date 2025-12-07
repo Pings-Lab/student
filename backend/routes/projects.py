@@ -22,11 +22,11 @@ def my_projects():
 
  output=[]
  for i in projects:
-   dom=Domains.query.get(i.domain).first()
-   a={"id": i.pro_id, "name":i.name, "summary": i.summary, "created": i.createdate.strftime("%H:%M, %d-%m-%Y"), "type": i.type, "status": i.status, "domain": dom.domain, "type":dom.type}
+   dom=Domains.query.get(i.domain)
+   a={"id": i.pro_id, "name":i.name, "summary": i.summary, "created": i.createdate.strftime("%d-%m-%Y"), "type": i.type, "status": i.status, "domain": dom.domain, "concept":dom.type}
    output.append(a)
 
- return jsonify({"success": True, "message": "alerts", "data": output}), 200
+ return jsonify({"success": True, "msg": "alerts", "data": output}), 200
 
 @project_bp.route("/create",methods=["POST"])
 @jwt_required()

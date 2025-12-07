@@ -25,7 +25,7 @@ def view_current_applied():
  output=[]
  for i in interns:
   a={"id": i.cid, "paid":i.paid, "progress": i.progress, "finished": i.finished, "status": i.status, "opted": i.opted }
-  output.current_append(a)
+  output.append(a)
 
  return jsonify({"success": True, "message": "internships", "data": output}), 200
 

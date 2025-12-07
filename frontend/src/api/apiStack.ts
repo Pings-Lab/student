@@ -15,6 +15,8 @@ const apiStack = {
   applyInternship: (data: any) => axiosClient.post("/internship/apply", data),
   seeAlerts: () => axiosClient.get("/alerts/all"),
   markAlert: (data: any) => axiosClient.put("/alerts/read", data),
+  myProjects: () => axiosClient.get("/project/myprojects"),
+  createProjects: (data: any) => axiosClient.post("/project/create", data),
 };
 
 export default apiStack;

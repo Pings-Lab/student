@@ -163,7 +163,7 @@ def my_pro():
 # create project
 def create_pro():
  print("15. Create Project\n")
- payload={"name": "some project", "summary":"testing","type":"public", "domain":"pr001"}
+ payload={"name": "some project", "summary":"testing","type":"private", "domain":"pr001"}
  response = session.post(url+"/project/create", json=payload)
  print("result: "+response.text+" "+str(response.status_code))
 

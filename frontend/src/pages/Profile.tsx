@@ -122,12 +122,12 @@ const Profile = () => {
                 </div>
                 <div>
                     <p>Gender:</p>
-<select value={gender} disabled={edit2} onChange={(e) => setGender(e.target.value)}>
-    <option value="">Select gender</option>
-    <option value="m">Male</option>
-    <option value="f">Female</option>
-    <option value="o">Other</option>
-</select>
+                   <select value={gender} disabled={edit2} onChange={(e) => setGender(e.target.value)}>
+                      <option value="">Select gender</option>
+                      <option value="m">Male</option>
+                      <option value="f">Female</option>
+                      <option value="o">Other</option>
+                  </select>
 
                 </div>
                 <div>
