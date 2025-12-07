@@ -57,5 +57,5 @@ def mark_read():
 
   return jsonify({"success": False, "msg": "something went wrong"}), 500
  except Exception as e:
-  current_app.logger.error(f"Failed: {e}", exc_info=True)
+  current_app.logger.error(f"Failed: {e} | '/alerts/read'")
   return jsonify({"success": False, "msg": "something went wrong"}), 500

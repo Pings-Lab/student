@@ -44,7 +44,7 @@ def username():
   db.session.commit()
   return jsonify({"success": True, "msg": "username changed"}), 200
  except Exception as e:
-  current_app.logger.error(f"Failed: {e}", exc_info=True)
+  current_app.logger.error(f"Failed: {e} | '/profile/username'")
   return jsonify({"success": False, "msg": "something went wrong"}), 400
 
 # Password change API
@@ -83,7 +83,7 @@ def password():
   db.session.commit()
   return jsonify({"success": True, "msg": "password changed"}), 200
  except Exception as e:
-  current_app.logger.error(f"Failed: {e}", exc_info=True)
+  current_app.logger.error(f"Failed: {e} | '/profile/password'")
   return jsonify({"success": False, "msg": "something went wrong"}), 500
 
 # Info change API
@@ -140,7 +140,7 @@ def info():
   db.session.commit()
   return jsonify({"success": True, "msg": "profile updated"}), 201
  except Exception as e:
-  current_app.logger.error(f"Failed: {e}", exc_info=True)
+  current_app.logger.error(f"Failed: {e} | '/profile/info'")
   return jsonify({"success": False, "msg": "something went wrong"}), 500
 
 #get otp
@@ -184,7 +184,7 @@ def verify():
   db.session.commit()
   return jsonify({"success":True, "msg":"account verified"}), 200
  except Exception as e:
-  current_app.logger.error(f"Failed: {e}", exc_info=True)
+  current_app.logger.error(f"Failed: {e} | '/profile/verify'")
   return jsonify({"success": False, "msg": "something went wrong"}), 500
 
 #get profile info
