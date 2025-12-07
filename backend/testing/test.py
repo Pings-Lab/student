@@ -153,7 +153,7 @@ def mark_read():
  print("\n-----------------------------------\n")
 
 #list my projects
-def my_pro:
+def my_pro():
  print("15. My Projects\n")
  response = session.get(url+"/project/myprojects")
  print("result: "+response.text+" "+str(response.status_code))
@@ -161,7 +161,7 @@ def my_pro:
  print("\n-----------------------------------\n")
 
 # create project
-def create_pro:
+def create_pro():
  print("15. Create Project\n")
  payload={"name": "some project", "summary":"testing","type":"public", "domain":"pr001"}
  response = session.post(url+"/project/create", json=payload)

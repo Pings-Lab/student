@@ -14,6 +14,7 @@ from routes.profile import profile_bp
 from routes.domains import domains_bp
 from routes.internship import intern_bp
 from routes.alerts import alert_bp
+from routes.projects import project_bp
 
 load_dotenv()
 
@@ -76,6 +77,7 @@ def create_app(config_class=Config):
     app.register_blueprint(domains_bp)
     app.register_blueprint(intern_bp)
     app.register_blueprint(alert_bp)
+    app.register_blueprint(project_bp)
 
     # Fix for CORS preflight rejection
     @app.before_request
