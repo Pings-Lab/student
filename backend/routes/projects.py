@@ -16,7 +16,7 @@ def my_projects():
   return jsonify({"success": False, "msg":"unauthorized access"}), 401
 
 
- projects=Project.query.filter_by(Project.creator_id=id).order_by(Project.createdate.desc()).all()
+ projects=Project.query.get(Project.creator_id==id).order_by(Project.createdate.desc()).all()
  if not projects:
   return jsonify({"success": False, "msg": "You have not created or joined any projects"}), 400
 
@@ -28,7 +28,7 @@ def my_projects():
 
  return jsonify({"success": True, "message": "alerts", "data": output}), 200
 
-@alert_bp.route("/create",methods=["POST"])
+@project_bp.route("/create",methods=["POST"])
 @jwt_required()
 def create_pro():
  id=json.loads(get_jwt_identity())
