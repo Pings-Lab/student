@@ -16,7 +16,7 @@ def my_projects():
   return jsonify({"success": False, "msg":"unauthorized access"}), 401
 
 
- projects=Project.query.filter_by(Project.creator_id==id).order_by(Project.createdate.desc()).all()
+ projects=Project.query.filter(Project.creator_id==id).order_by(Project.createdate.desc()).all()
  if not projects:
   return jsonify({"success": False, "msg": "You have not created or joined any projects"}), 400
 
@@ -47,7 +47,7 @@ def create_pro():
   if len(name) > 30:
    return jsonify({"success": False, "msg": "project name should be within 30 characters"}), 400
   if len(domain)==5:
-    dom=Domains.query.get(domain).first()
+    dom=Domains.query.get(domain)
     if not dom:
      return jsonify({"success": False, "msg": "invalid request"}), 400
   else:
@@ -68,12 +68,13 @@ def create_pro():
 
   alert=Alerts(
   alert_id=gen_id(20),
-  message=f"You have created a {type} new project.",
+  message=f"You have created a new {type} project.",
   uid=id
   )
   db.session.add(project)
   db.session.add(alert)
   db.session.commit()
+  return jsonify({"success": True, "msg": "Project Created Successfully"}), 201
  except Exception as e:
   current_app.logger.error(f"Failed: {e} | '/projects/create'")
   return jsonify({"success": False, "msg": "something went wrong"}), 500

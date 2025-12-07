@@ -7,8 +7,8 @@ print("\n------------API testing------------\n")
 # Login (server sets JWT cookie)
 def login():
  print("1. Login API\n")
- email=input("Email: ")
- password=input("Password: ")
+ email="pradeepholagundi@gmail.com"
+ password="Deepu@312"
  payload = {
     "email": email,
     "password": password
