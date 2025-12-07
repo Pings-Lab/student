@@ -74,4 +74,5 @@ def apply_intern():
   db.session.commit()
   return jsonify({"success": True, "msg":"applied to internship successfully"}), 201
  except Exception as e:
+  app.logger.error(f"Failed: {e}", exc_info=True)
   return jsonify({"success": False, "msg": f"something went wrong {e}"}), 500

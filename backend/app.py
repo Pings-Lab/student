@@ -34,9 +34,33 @@ def create_app(config_class=Config):
     )
 
     # Logging setup
-    handler = RotatingFileHandler("/home/pradeep/Documents/student/backend/app.log", maxBytes=5 * 1024 * 1024, backupCount=5)
+    # ─── Logging Setup START ───────────────────────────────────────
+    class RequestIPFilter(logging.Filter):
+      def filter(self, record):
+        try:
+            from flask import request
+            record.remote_addr = request.remote_addr
+        except RuntimeError:
+            record.remote_addr = "-"
+        return True
+
+    formatter = logging.Formatter(
+     "%(remote_addr)s | %(asctime)s | %(levelname)s | %(message)s"
+    )
+
+    handler = RotatingFileHandler(
+     "/home/pradeep/Documents/student/backend/app.log",
+     maxBytes=5 * 1024 * 1024,
+     backupCount=5
+    )
+
     handler.setLevel(logging.ERROR)
+    handler.setFormatter(formatter)
+    handler.addFilter(RequestIPFilter())
+
     app.logger.addHandler(handler)
+    app.logger.setLevel(logging.ERROR)
+# ─── Logging Setup END ─────────────────────────────────────────
 
     # Initialize extension objects
     db.init_app(app)
