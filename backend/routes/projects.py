@@ -16,7 +16,7 @@ def my_projects():
   return jsonify({"success": False, "msg":"unauthorized access"}), 401
 
 
- projects=Project.query.filter_by(creator_id==id).order_by(Project.createdate.desc()).all()
+ projects=Project.query.filter_by(Project.creator_id==id).order_by(Project.createdate.desc()).all()
  if not projects:
   return jsonify({"success": False, "msg": "You have not created or joined any projects"}), 400
 
