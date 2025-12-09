@@ -6,6 +6,8 @@ import Profile from './Profile'
 import Internship from './Internship'
 import Alerts from './Alerts'
 import Project from './Project'
+import Collab from './Collab'
+import Tasks from './Tasks'
 const Dashboard = () => {
   const {tab} = useTabState();
   return (
@@ -17,7 +19,9 @@ const Dashboard = () => {
       {tab === 0 && <Land/>}
       {tab === 1 && <Profile/>}
       {tab === 2 && <Internship/>}
+      {tab === 3 && <Collab/>}
       {tab === 4 && <Project/>}
+      {tab === 5 && <Tasks/>}
       {tab === 7 && <Alerts/>}
     </div>
     

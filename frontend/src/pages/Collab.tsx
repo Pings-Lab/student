@@ -1,66 +1,24 @@
 import './project.css'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useProfileStore } from '../store/profileStore'
 import { useNavigate } from 'react-router-dom'
 import { useProjectStore } from '../store/projectStore'
-import { Lock, Users, Plus, Filter, Search, X } from 'lucide-react'
+import {  Users, ListOrdered, Filter, Search } from 'lucide-react'
 
-const Project = () => {
+const Collab = () => {
     const {verified} = useProfileStore()
     const {f_err, fetchProjects, projects} =useProjectStore()
     useEffect(() => {
             fetchProjects();
           }, []);
     const nav=useNavigate()
-    const [pcreate, setCreate] = useState(false);
-    const opencreate =()=>{
-      setCreate(!pcreate);
-    }
   return (
-   <div className='panelpage relate'>
+   <div className='panelpage'>
     {!verified && <div className="alert" onClick={() => nav("/verify")}>Verify your account</div>}
-     {pcreate && (
-      <div id='create_pro_slide'>
-      
-        <X onClick={opencreate} style={{cursor:'pointer'}}/> 
-        <h3>Create Project</h3>
-        <form style={{padding:'0% 0%',height: '80%', width:'80%', margin:'2% auto', background:'transparent', display: 'flex', alignItems:'center', justifyContent:'space-evenly', flexDirection:'column', boxShadow:'none'}}>
-          <div>
-            <input type="text" placeholder='Project Name'/>
-            <select>
-              <option value="">Type</option>
-              <option value="private">Private</option>
-              <option value="public">Public</option>
-            </select>
-          </div>
-          <div>
-             <select>
-              <option value="private">Domain</option>
-              <option value="private">Private</option>
-              <option value="public">Public</option>
-            </select>
-             <select>
-              <option value="private">Concept</option>
-              <option value="private">Private</option>
-              <option value="public">Public</option>
-            </select>
-          </div>
-         
-          <div>
-            <input type="text" />
-            <input type="text" />
-          </div>
-          <div>
-            <button style={{width:'15%', height:'60%', fontSize:'1.1em'}}>Create</button>
-          </div>
-        </form>
-     </div>
-     )}
-     
-    <h3>Projects</h3>
+    <h3>Collab</h3>
     <div id="projectbar">
-                <div onClick={opencreate} style={{cursor:'pointer'}}>
-                  <Plus/>New
+                <div>
+                  <ListOrdered/>Sort By
                 </div>
                 <div style={{width: '60%'}}>
                   
@@ -73,8 +31,6 @@ const Project = () => {
                 <div>
                   <Filter/> <select style={{height: '100%', width:'60%', fontSize:'1em', border:'none', color: 'white', textAlign: 'center', outline: 'none', background: 'linear-gradient(gray,black)'}}>
                       <option value="all">All</option>
-                      <option value="da">Private</option>
-                      <option value="dd">Public</option>
                       <option value="pub">Open</option>
                       <option value="pub">Closed</option>
                   </select>
@@ -87,7 +43,7 @@ const Project = () => {
   .map(item => (
     <div key={item.id} className="box">
         <div className="ptype">
-            <p style={{background:item.type === 'public'? 'green': 'blue'}}>{item.type === 'public' && (<Users size={15}/>)}{item.type === 'private' && (<Lock size={15}/>)}{item.type}</p>
+            <p style={{background: 'green'}}><Users size={15}/>30</p>
             <p style={{width:'fit-content'}}>{item.created}</p>
 
         </div>
@@ -108,13 +64,10 @@ const Project = () => {
 
 
             </div>
-             
-          
-        
     </div>
-   
+    
    </div>
   )
 }
 
-export default Project
+export default Collab
