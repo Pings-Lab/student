@@ -84,7 +84,7 @@ select option{
     margin: auto 5%;
     height: 70vh;
     width: 90%;
-    background-color: black;
+    background:linear-gradient(135deg, rgb(2, 89, 22) , rgb(5, 1, 73) );
     z-index: 10;
     box-shadow: 0px 0px 5px 1px white;
 }
@@ -98,7 +98,7 @@ select option{
     margin: 0 auto;
 }
 
-#create_pro_slide form div input, #create_pro_slide form div select{
+#create_pro_slide form div input, #create_pro_slide form div select, textarea{
      width: 35%;
     height: 100%;
      display: flex;
@@ -109,4 +109,10 @@ select option{
     color: aliceblue;
     font-size: 1.2em;
     text-align: center;
+}
+
+#create_pro_slide form div textarea{
+    width: 80%;
+    height: 200%;
+    text-align: left;
 }

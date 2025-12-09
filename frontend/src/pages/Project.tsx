@@ -4,10 +4,11 @@ import { useProfileStore } from '../store/profileStore'
 import { useNavigate } from 'react-router-dom'
 import { useProjectStore } from '../store/projectStore'
 import { Lock, Users, Plus, Filter, Search, X } from 'lucide-react'
+import { ToastContainer, toast } from 'react-toastify';
 
 const Project = () => {
     const {verified} = useProfileStore()
-    const {f_err, fetchProjects, projects} =useProjectStore()
+    const {c_err, fetchProjects, projects, new_project, createProject} =useProjectStore()
     useEffect(() => {
             fetchProjects();
           }, []);
@@ -15,6 +16,19 @@ const Project = () => {
     const [pcreate, setCreate] = useState(false);
     const opencreate =()=>{
       setCreate(!pcreate);
+    }
+    const createNewPro= async (e: any)=>{
+     e.preventDefault()
+     const res= await createProject();
+     if(!res)
+     {
+      toast(c_err)
+     }
+     else{
+      toast("Project Created Successfully")
+      setCreate(!pcreate)
+      fetchProjects()
+     }
     }
   return (
    <div className='panelpage relate'>
@@ -24,22 +38,22 @@ const Project = () => {
       
         <X onClick={opencreate} style={{cursor:'pointer'}}/> 
         <h3>Create Project</h3>
-        <form style={{padding:'0% 0%',height: '80%', width:'80%', margin:'2% auto', background:'transparent', display: 'flex', alignItems:'center', justifyContent:'space-evenly', flexDirection:'column', boxShadow:'none'}}>
+        <form onSubmit={(e)=>createNewPro} style={{padding:'0% 0%',height: '80%', width:'80%', margin:'2% auto', background:'transparent', display: 'flex', alignItems:'center', justifyContent:'space-evenly', flexDirection:'column', boxShadow:'none'}}>
           <div>
-            <input type="text" placeholder='Project Name'/>
-            <select>
+            <input type="text" placeholder='Project Name' value={new_project.name} onChange={(e)=>e.target.value}/>
+            <select value={new_project.type} onChange={(e)=>e.target.value}>
               <option value="">Type</option>
               <option value="private">Private</option>
               <option value="public">Public</option>
             </select>
           </div>
           <div>
-             <select>
+             <select value={new_project.domain} onChange={(e)=>e.target.value}>
               <option value="private">Domain</option>
               <option value="private">Private</option>
               <option value="public">Public</option>
             </select>
-             <select>
+             <select value={new_project.concept} onChange={(e)=>e.target.value}>
               <option value="private">Concept</option>
               <option value="private">Private</option>
               <option value="public">Public</option>
@@ -47,11 +61,12 @@ const Project = () => {
           </div>
          
           <div>
-            <input type="text" />
-            <input type="text" />
+            <textarea name="summary" id="summary" placeholder='Summary of the project' value={new_project.summary} onChange={(e)=>e.target.value}>
+
+            </textarea>
           </div>
           <div>
-            <button style={{width:'15%', height:'60%', fontSize:'1.1em'}}>Create</button>
+            <button style={{width:'15%', height:'60%', fontSize:'1.1em'}} >Create</button>
           </div>
         </form>
      </div>
@@ -112,7 +127,7 @@ const Project = () => {
           
         
     </div>
-   
+   <ToastContainer/>
    </div>
   )
 }
