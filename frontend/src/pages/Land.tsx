@@ -1,4 +1,4 @@
-import './dashboard.css'
+
 import { useEffect } from 'react'
 import {useProfileStore} from '../store/profileStore'
 import { useNavigate } from 'react-router-dom'

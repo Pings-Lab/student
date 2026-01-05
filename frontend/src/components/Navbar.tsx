@@ -1,124 +1,123 @@
-import './navbar.css'
 import { useState, useEffect } from 'react'
-import { LayoutDashboard, User2Icon, Users, BriefcaseBusiness, SquareKanban, ClipboardList, Trophy, Bell, LogOut } from 'lucide-react'
+import { 
+  LayoutDashboard, 
+  User2Icon, 
+  Users, 
+  BriefcaseBusiness, 
+  SquareKanban, 
+  ClipboardList, 
+  Trophy, 
+  Bell, 
+  LogOut, 
+  SquareMenu 
+} from 'lucide-react'
 import logo from '../assets/ping.jpg'
-import { SquareMenu } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import useAuth from '../store/authStore'
 import useTab from '../store/tab'
 import { useAlertStore } from '../store/alertStore'
 
 const Navbar = () => {
-    const [hover, setHover] = useState(false);
-    const [clicked, setClicked] = useState(false);
-    const {setTab} = useTab();
-    const {newcount, fetchAlerts}= useAlertStore();
+    const [isCollapsed, setIsCollapsed] = useState(false);
+    const { setTab } = useTab();
+    const { newcount, fetchAlerts } = useAlertStore();
     const navigate = useNavigate();
     const { logout } = useAuth();
-    const handleClick = () => {
 
-      setClicked(!clicked);
-    }
     const handleLogout = () => {
-      logout();
-      navigate("/");
+        logout();
+        navigate("/");
     }
 
-    const changetab = (v: any) => {
-      setTab(v);
-    }
     useEffect(() => {
-            fetchAlerts();
-          }, []);
-  return (
-    <div id='nav'>
-        <table >
-            <tr style={{ width: clicked ? "3vw" : "15vw" }}>
-  <td
-    className="icon"
-    onMouseEnter={() => setHover(true)}
-    onMouseLeave={() => setHover(false)}
-    style={{ position: "relative", transition: "all 1s ease" }}
-  >
+        fetchAlerts();
+    }, []);
 
-    {/* IMAGE (default) */}
-    <img
-      src={logo}
-      style={{
-        height: "100%",
-        width: "100%",
-        borderRadius: "50%",
-        position: "absolute",
-        inset: 0,
-        opacity: hover ? 0 : 1,
-        transition: "opacity 0.6s ease"
-      }}
-    />
+    const navItems = [
+        { id: 0, label: 'Dashboard', icon: LayoutDashboard },
+        { id: 1, label: 'Profile', icon: User2Icon },
+        { id: 2, label: 'Internship', icon: BriefcaseBusiness },
+        { id: 3, label: 'Collab', icon: Users },
+        { id: 4, label: 'Projects', icon: SquareKanban },
+        { id: 5, label: 'Tasks', icon: ClipboardList },
+        { id: 6, label: 'Leaderboard', icon: Trophy },
+        { id: 7, label: 'Notifications', icon: Bell, alert: newcount > 0 },
+    ];
 
-    {/* ICON (on hover) */}
-            <SquareMenu
-              color="white"
-              onClick={handleClick}
-              style={{
-                 width: "100%",
-                 height: "100%",
-                 position: "absolute",
-                 inset: 0,
-                 opacity: hover ? 1 : 0,
-                transition: "opacity 0.6s ease"
-            }}
-            />
+    return (
+        <aside 
+            className={`fixed left-0 top-0 h-screen bg-zinc-950 border-r border-zinc-900 transition-all duration-300 ease-in-out z-50 flex flex-col
+            ${isCollapsed ? 'w-20' : 'w-64'}`}
+        >
+            {/* Header / Logo Section */}
+            <div className="p-4 mb-6 flex items-center gap-3">
+                <div 
+                    className="relative w-10 h-10 flex-shrink-0 cursor-pointer group"
+                    onClick={() => setIsCollapsed(!isCollapsed)}
+                >
+                    <img
+                        src={logo}
+                        alt="Logo"
+                        className={`w-full h-full rounded-xl object-cover transition-opacity duration-500 
+                        ${isCollapsed ? 'group-hover:opacity-0' : 'opacity-100'}`}
+                    />
+                    <SquareMenu 
+                        className={`absolute inset-0 w-full h-full text-blue-500 transition-opacity duration-500
+                        ${isCollapsed ? 'opacity-0 group-hover:opacity-100' : 'opacity-0'}`}
+                    />
+                </div>
+                {!isCollapsed && (
+                    <span className="font-black italic text-xl tracking-tighter animate-in fade-in duration-500">
+                        PING'S LAB
+                    </span>
+                )}
+            </div>
 
-            </td>
+            {/* Navigation Links */}
+            <nav className="flex-1 px-3 space-y-2">
+                {navItems.map((item) => (
+                    <button
+                        key={item.id}
+                        onClick={() => setTab(item.id)}
+                        className="w-full flex items-center gap-4 p-3 rounded-xl transition-all duration-200 hover:bg-zinc-900 group relative"
+                    >
+                        <item.icon 
+                            className={`w-6 h-6 flex-shrink-0 transition-colors
+                            ${item.alert ? 'text-red-500' : 'text-cyan-400 group-hover:text-white'}`} 
+                        />
+                        
+                        {!isCollapsed && (
+                            <span className="text-sm font-medium text-zinc-400 group-hover:text-white animate-in slide-in-from-left-2">
+                                {item.label}
+                            </span>
+                        )}
 
-             <td className="name" id="logo" style={{ display: clicked ? "none" : "flex" }}>
-              Ping's Lab
-            </td>
-           </tr>
+                        {/* Tooltip for Collapsed State */}
+                        {isCollapsed && (
+                            <div className="absolute left-16 px-2 py-1 bg-blue-600 text-white text-xs rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity">
+                                {item.label}
+                            </div>
+                        )}
+                    </button>
+                ))}
+            </nav>
 
-            
-            <tr style={{width: clicked ? "3vw" : "15vw"}} onClick={() => changetab(0)}
->
-                <td className='icon'><LayoutDashboard color='aqua' style={{ width: '100%', height: '100%' }}/></td>
-                <td className='name' style={{display: clicked ? "none" : "flex"}}>Dashboard</td>
-            </tr>
-            <tr style={{width: clicked ? "3vw" : "15vw"}} onClick={() => changetab(1)}
->
-                <td className='icon'><User2Icon color='aqua' style={{ width: '100%', height: '100%' }}/></td>
-                <td className='name' style={{display: clicked ? "none" : "flex"}}>Profile</td>
-            </tr>
-            <tr style={{width: clicked ? "3vw" : "15vw"}} onClick={() => changetab(2)}>
-                <td className='icon'><BriefcaseBusiness color='aqua' style={{ width: '100%', height: '100%' }}/></td>
-                <td className='name' style={{display: clicked ? "none" : "flex"}}>Internship</td>
-            </tr>
-            <tr style={{width: clicked ? "3vw" : "15vw"}} onClick={() => changetab(3)}>
-                <td className='icon'><Users color='aqua' style={{ width: '100%', height: '100%' }}/></td>
-                <td className='name' style={{display: clicked ? "none" : "flex"}}>Collab</td>
-            </tr>
-            
-            <tr style={{width: clicked ? "3vw" : "15vw"}} onClick={() => changetab(4)}>
-                <td className='icon'><SquareKanban color='aqua' style={{ width: '100%', height: '100%' }}/></td>
-                <td className='name' style={{display: clicked ? "none" : "flex"}}>Projects</td>
-            </tr>
-            <tr style={{width: clicked ? "3vw" : "15vw"}} onClick={() => changetab(5)}>
-                <td className='icon'><ClipboardList color='aqua' style={{ width: '100%', height: '100%' }}/></td>
-                <td className='name' style={{display: clicked ? "none" : "flex"}}>Tasks</td>
-            </tr>
-            <tr style={{width: clicked ? "3vw" : "15vw"}} onClick={() => changetab(6)}>
-                <td className='icon'><Trophy color='aqua' style={{ width: '100%', height: '100%' }}/></td>
-                <td className='name' style={{display: clicked ? "none" : "flex"}}>Leadboard</td>
-            </tr>
-            <tr style={{width: clicked ? "3vw" : "15vw"}} onClick={() => changetab(7)}>
-                <td className='icon'><Bell style={{ width: '100%', height: '100%', color: newcount > 0 ? "red": "aqua"}}/></td>
-                <td className='name' style={{display: clicked ? "none" : "flex"}}>Notifications</td>
-            </tr>
-            <tr style={{width: clicked ? "3vw" : "15vw", marginTop: "auto"}} onClick={handleLogout}>
-                <td className='icon'><LogOut color='aqua' style={{ width: '100%', height: '100%' }}/></td>
-                <td className='name' style={{display: clicked ? "none" : "flex"}}>Logout</td>
-            </tr>
-        </table>
-    </div>
-  )
+            {/* Logout Section */}
+            <div className="p-3 border-t border-zinc-900 mb-4">
+                <button
+                    onClick={handleLogout}
+                    className="w-full flex items-center gap-4 p-3 rounded-xl transition-all duration-200 hover:bg-red-500/10 group"
+                >
+                    <LogOut className="w-6 h-6 text-cyan-400 group-hover:text-red-500 transition-colors" />
+                    {!isCollapsed && (
+                        <span className="text-sm font-medium text-zinc-400 group-hover:text-red-500">
+                            Logout
+                        </span>
+                    )}
+                </button>
+            </div>
+        </aside>
+    )
 }
 
-export default Navbar
+export default Navbar;

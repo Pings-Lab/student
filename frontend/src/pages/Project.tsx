@@ -1,135 +1,198 @@
-import './project.css'
 import { useEffect, useState } from 'react'
 import { useProfileStore } from '../store/profileStore'
 import { useNavigate } from 'react-router-dom'
 import { useProjectStore } from '../store/projectStore'
-import { Lock, Users, Plus, Filter, Search, X } from 'lucide-react'
+import { Lock, Users, Plus, Filter, Search, X, FolderCode, Terminal, Rocket, Info } from 'lucide-react'
 import { ToastContainer, toast } from 'react-toastify';
 
 const Project = () => {
-    const {verified} = useProfileStore()
-    const {c_err, fetchProjects, projects, new_project, createProject} =useProjectStore()
-    useEffect(() => {
-            fetchProjects();
-          }, []);
-    const nav=useNavigate()
-    const [pcreate, setCreate] = useState(false);
-    const opencreate =()=>{
-      setCreate(!pcreate);
-    }
-    const createNewPro= async (e: any)=>{
-     e.preventDefault()
-     const res= await createProject();
-     if(!res)
-     {
-      toast(c_err)
-     }
-     else{
-      toast("Project Created Successfully")
-      setCreate(!pcreate)
-      fetchProjects()
-     }
-    }
-  return (
-   <div className='panelpage relate'>
-    {!verified && <div className="alert" onClick={() => nav("/verify")}>Verify your account</div>}
-     {pcreate && (
-      <div id='create_pro_slide'>
-      
-        <X onClick={opencreate} style={{cursor:'pointer'}}/> 
-        <h3>Create Project</h3>
-        <form onSubmit={(e)=>createNewPro} style={{padding:'0% 0%',height: '80%', width:'80%', margin:'2% auto', background:'transparent', display: 'flex', alignItems:'center', justifyContent:'space-evenly', flexDirection:'column', boxShadow:'none'}}>
-          <div>
-            <input type="text" placeholder='Project Name' value={new_project.name} onChange={(e)=>e.target.value}/>
-            <select value={new_project.type} onChange={(e)=>e.target.value}>
-              <option value="">Type</option>
-              <option value="private">Private</option>
-              <option value="public">Public</option>
-            </select>
-          </div>
-          <div>
-             <select value={new_project.domain} onChange={(e)=>e.target.value}>
-              <option value="private">Domain</option>
-              <option value="private">Private</option>
-              <option value="public">Public</option>
-            </select>
-             <select value={new_project.concept} onChange={(e)=>e.target.value}>
-              <option value="private">Concept</option>
-              <option value="private">Private</option>
-              <option value="public">Public</option>
-            </select>
-          </div>
-         
-          <div>
-            <textarea name="summary" id="summary" placeholder='Summary of the project' value={new_project.summary} onChange={(e)=>e.target.value}>
+  const { verified } = useProfileStore()
+  const { c_err, fetchProjects, projects, new_project, createProject, setNewProjectState } = useProjectStore()
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const nav = useNavigate()
 
-            </textarea>
+  useEffect(() => {
+    fetchProjects();
+  }, [fetchProjects]);
+
+  const handleCreateProject = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const res = await createProject();
+    if (!res) {
+      toast.error(c_err || "Authorization Failed");
+    } else {
+      toast.success("Project Node Initialized");
+      setIsModalOpen(false);
+      fetchProjects();
+    }
+  }
+
+  return (
+    <div className="min-h-screen bg-black text-white p-6 md:p-10 font-sans">
+      <ToastContainer theme="dark" />
+      
+      {!verified && (
+        <div 
+          onClick={() => nav("/verify")}
+          className="mb-8 flex items-center justify-between p-4 bg-orange-500/10 border border-orange-500/30 rounded-2xl cursor-pointer hover:bg-orange-500/20 transition-all"
+        >
+          <div className="flex items-center gap-3 text-orange-400">
+            <Info className="animate-pulse" />
+            <span className="font-bold tracking-tight text-sm uppercase">Verification required to initialize new repositories</span>
           </div>
-          <div>
-            <button style={{width:'15%', height:'60%', fontSize:'1.1em'}} >Create</button>
-          </div>
-        </form>
-     </div>
-     )}
-     
-    <h3>Projects</h3>
-    <div id="projectbar">
-                <div onClick={opencreate} style={{cursor:'pointer'}}>
-                  <Plus/>New
+        </div>
+      )}
+
+      {/* CREATE PROJECT MODAL */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/90 backdrop-blur-sm" onClick={() => setIsModalOpen(false)} />
+          
+          <div className="relative w-full max-w-2xl bg-zinc-950 border border-zinc-900 rounded-[2.5rem] p-8 shadow-2xl animate-in zoom-in-95 duration-300">
+            <button onClick={() => setIsModalOpen(false)} className="absolute top-6 right-6 p-2 text-zinc-500 hover:text-white">
+              <X size={24} />
+            </button>
+
+            <div className="mb-8">
+              <h3 className="text-2xl font-black italic tracking-tighter uppercase mb-1">New Repository</h3>
+              <p className="text-zinc-500 font-mono text-[10px] tracking-[0.2em]">PROTOCOL: PROJECT_INIT_v4.0</p>
+            </div>
+
+            <form onSubmit={handleCreateProject} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest ml-1">Project Name</label>
+                  <input 
+                    type="text" 
+                    placeholder="E.g. Neural_Net_Alpha"
+                    className="w-full bg-black border border-zinc-900 rounded-xl px-4 py-3 text-sm focus:border-blue-500 outline-none transition-all"
+                    value={new_project.name}
+                    onChange={(e) => setNewProjectState({ ...new_project, name: e.target.value })}
+                    required
+                  />
                 </div>
-                <div style={{width: '60%'}}>
-                  
-                  <input type="text" style={{height: '100%', width:'100%', fontSize:'1em', background: 'linear-gradient(gray,black)', border:'none', color: 'white', textAlign: 'center', outline: 'none'}} />
-                  <button style={{outline: 'none', background: 'linear-gradient(gray,black)', border:'none', color: 'white'}}>
-                    <Search/>
-                  </button>
-                
-                </div>
-                <div>
-                  <Filter/> <select style={{height: '100%', width:'60%', fontSize:'1em', border:'none', color: 'white', textAlign: 'center', outline: 'none', background: 'linear-gradient(gray,black)'}}>
-                      <option value="all">All</option>
-                      <option value="da">Private</option>
-                      <option value="dd">Public</option>
-                      <option value="pub">Open</option>
-                      <option value="pub">Closed</option>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest ml-1">Visibility</label>
+                  <select 
+                    className="w-full bg-black border border-zinc-900 rounded-xl px-4 py-3 text-sm focus:border-blue-500 outline-none transition-all"
+                    value={new_project.type}
+                    onChange={(e) => setNewProjectState({ ...new_project, type: e.target.value })}
+                  >
+                    <option value="private">Private (Locked)</option>
+                    <option value="public">Public (Collaborative)</option>
                   </select>
                 </div>
+              </div>
 
-            </div>
-    <div id="projectpage">
-         <div className="pro_slide" >
-                {projects
-  .map(item => (
-    <div key={item.id} className="box">
-        <div className="ptype">
-            <p style={{background:item.type === 'public'? 'green': 'blue'}}>{item.type === 'public' && (<Users size={15}/>)}{item.type === 'private' && (<Lock size={15}/>)}{item.type}</p>
-            <p style={{width:'fit-content'}}>{item.created}</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest ml-1">Domain</label>
+                  <input 
+                    type="text" 
+                    placeholder="Web, AI, Cloud..."
+                    className="w-full bg-black border border-zinc-900 rounded-xl px-4 py-3 text-sm focus:border-blue-500 outline-none"
+                    value={new_project.domain}
+                    onChange={(e) => setNewProjectState({ ...new_project, domain: e.target.value })}
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest ml-1">Concept</label>
+                  <input 
+                    type="text" 
+                    placeholder="MVP, Beta, Production..."
+                    className="w-full bg-black border border-zinc-900 rounded-xl px-4 py-3 text-sm focus:border-blue-500 outline-none"
+                    value={new_project.concept}
+                    onChange={(e) => setNewProjectState({ ...new_project, concept: e.target.value })}
+                  />
+                </div>
+              </div>
 
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest ml-1">Summary</label>
+                <textarea 
+                  placeholder="Define project scope and deliverables..."
+                  className="w-full bg-black border border-zinc-900 rounded-xl px-4 py-3 text-sm h-32 resize-none focus:border-blue-500 outline-none"
+                  value={new_project.summary}
+                  onChange={(e) => setNewProjectState({ ...new_project, summary: e.target.value })}
+                />
+              </div>
+
+              <button className="w-full py-4 bg-white text-black font-black uppercase text-sm rounded-2xl hover:bg-blue-600 hover:text-white transition-all flex items-center justify-center gap-2">
+                <Plus size={18} /> Create Repository
+              </button>
+            </form>
+          </div>
         </div>
-      <h4>{item.name}</h4>
-      <div className="iinfos">
-        <p style={{color: "greenyellow", fontSize: '1.2em'}}>{item.domain}</p>
-        <p style={{color: "skyblue", fontSize: '1.2em', textAlign: 'center'}}>{item.concept}</p> </div>
-        <p style={{display: 'flex',justifyContent: 'space-evenly', alignItems:'center', width:'100%'}}>
-            <button>View</button>
-            <button>Dive In</button>
-        </p>
-    </div>
-    
-  ))
-  
-}
-   
+      )}
 
-
-            </div>
-             
-          
+      {/* MAIN VIEW */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+        <h3 className="text-3xl font-black italic tracking-tighter uppercase">Project <span className="text-blue-500">Inventory</span></h3>
         
+        <div className="flex flex-wrap gap-3">
+          <button 
+            onClick={() => setIsModalOpen(true)}
+            className="flex items-center gap-2 px-6 py-3 bg-white text-black rounded-xl text-xs font-black uppercase tracking-widest hover:bg-blue-500 hover:text-white transition-all"
+          >
+            <Plus size={16} /> New_Project
+          </button>
+        </div>
+      </div>
+
+      {/* FILTER BAR */}
+      <div className="flex flex-col lg:flex-row gap-4 mb-10 p-2 bg-zinc-950 border border-zinc-900 rounded-3xl">
+        <div className="flex-1 relative group">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-600 group-focus-within:text-blue-500" size={18} />
+          <input 
+            type="text" 
+            placeholder="FILTER_DATABASE_ID..."
+            className="w-full h-12 bg-black border border-zinc-900 rounded-2xl pl-12 pr-4 text-xs font-mono focus:border-blue-500 outline-none"
+          />
+        </div>
+        <div className="flex items-center gap-3 bg-zinc-900 rounded-2xl px-4 py-2">
+          <Filter size={16} className="text-zinc-500" />
+          <select className="bg-transparent text-xs font-bold uppercase focus:outline-none">
+            <option value="all">Filter: All</option>
+            <option value="private">Private Only</option>
+            <option value="public">Public Only</option>
+          </select>
+        </div>
+      </div>
+
+      {/* PROJECT GRID */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {projects.map(item => (
+          <div key={item.id} className="group bg-zinc-950 border border-zinc-900 rounded-[2rem] p-6 hover:border-zinc-700 transition-all relative overflow-hidden">
+            <div className="flex items-center justify-between mb-6">
+              <div className={`flex items-center gap-2 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-tighter ${
+                item.type === 'public' ? 'bg-green-500/10 text-green-500' : 'bg-blue-500/10 text-blue-500'
+              }`}>
+                {item.type === 'public' ? <Users size={12}/> : <Lock size={12}/>}
+                {item.type}
+              </div>
+              <span className="text-[10px] font-mono text-zinc-600">{item.created}</span>
+            </div>
+
+            <h4 className="text-xl font-bold italic uppercase mb-4 truncate">{item.name}</h4>
+            
+            <div className="flex gap-2 mb-8">
+              <span className="px-2 py-1 bg-zinc-900 rounded text-[10px] font-mono text-zinc-400 uppercase">{item.domain}</span>
+              <span className="px-2 py-1 bg-zinc-900 rounded text-[10px] font-mono text-zinc-400 uppercase">{item.concept}</span>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 relative z-10">
+              <button className="py-3 bg-zinc-900 hover:bg-zinc-800 text-[10px] font-black uppercase rounded-xl transition-all">Audit</button>
+              <button className="py-3 bg-white text-black hover:bg-blue-600 hover:text-white text-[10px] font-black uppercase rounded-xl transition-all flex items-center justify-center gap-2">
+                <Terminal size={12}/> Dive In
+              </button>
+            </div>
+            
+            <FolderCode className="absolute -bottom-4 -right-4 w-24 h-24 text-white/5 group-hover:text-blue-500/10 transition-colors pointer-events-none" />
+          </div>
+        ))}
+      </div>
     </div>
-   <ToastContainer/>
-   </div>
   )
 }
 
-export default Project
+export default Project;
