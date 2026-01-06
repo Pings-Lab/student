@@ -47,7 +47,11 @@ def create_pro():
   if len(name) > 30:
    return jsonify({"success": False, "msg": "project name should be within 30 characters"}), 400
   else:
-   nameser=Project.query.filter(Project.creator_id==id and Project.name==name).first()
+   nameser = Project.query.filter(
+    Project.creator_id == id,
+    Project.name == name
+    ).first()
+
    if nameser:
     return jsonify({"success": False, "msg": f"project name {name} already exists"}), 400
   if len(domain)==5:
