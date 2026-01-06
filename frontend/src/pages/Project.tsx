@@ -2,14 +2,18 @@ import { useEffect, useState } from 'react'
 import { useProfileStore } from '../store/profileStore'
 import { useNavigate } from 'react-router-dom'
 import { useProjectStore } from '../store/projectStore'
-import { Lock, Users, Plus, Filter, Search, X, FolderCode, Terminal, Rocket, Info } from 'lucide-react'
+import { Lock, Users, Plus, Filter, Search, X, FolderCode, Terminal, Info } from 'lucide-react'
 import { ToastContainer, toast } from 'react-toastify';
+import { useInternshipStore } from "../store/internStore";
+import { useAlertStore } from "../store/alertStore";
 
 const Project = () => {
   const { verified } = useProfileStore()
   const { c_err, fetchProjects, projects, new_project, createProject, setNewProjectState } = useProjectStore()
   const [isModalOpen, setIsModalOpen] = useState(false);
   const nav = useNavigate()
+  const { internships} = useInternshipStore();
+  const { fetchAlerts } = useAlertStore()
 
   useEffect(() => {
     fetchProjects();
@@ -24,6 +28,7 @@ const Project = () => {
       toast.success("Project Node Initialized");
       setIsModalOpen(false);
       fetchProjects();
+      fetchAlerts();
     }
   }
 
@@ -87,13 +92,15 @@ const Project = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
                   <label className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest ml-1">Domain</label>
-                  <input 
-                    type="text" 
-                    placeholder="Web, AI, Cloud..."
-                    className="w-full bg-black border border-zinc-900 rounded-xl px-4 py-3 text-sm focus:border-blue-500 outline-none"
+                  <select 
+                    className="w-full bg-black border border-zinc-900 rounded-xl px-4 py-3 text-sm focus:border-blue-500 outline-none transition-all"
                     value={new_project.domain}
                     onChange={(e) => setNewProjectState({ ...new_project, domain: e.target.value })}
-                  />
+                  >
+                    {internships.map((internship) => (
+                      <option value={internship.id}>{internship.type} - {internship.name}</option>
+                    ))}
+                  </select>
                 </div>
                 <div className="space-y-1.5">
                   <label className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest ml-1">Concept</label>

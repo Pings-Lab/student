@@ -48,7 +48,7 @@ const Internship = () => {
         { id: 5, name: "Programming" },
         { id: 6, name: "Web Frontend" },
         { id: 7, name: "Web Backend" },
-        { id: 8, name: "Other" }
+        { id: 8, name: "other" }
     ];
 
     const handleApply = async (x: string) => {

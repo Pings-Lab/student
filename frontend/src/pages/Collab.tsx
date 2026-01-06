@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useProfileStore } from '../store/profileStore'
 import { useNavigate } from 'react-router-dom'
 import { useProjectStore } from '../store/projectStore'
-import { Users, ListOrdered, Filter, Search, ShieldAlert, Rocket, ExternalLink } from 'lucide-react'
+import { Users, ListOrdered, Filter, Search, ShieldAlert, Rocket } from 'lucide-react'
 
 const Collab = () => {
     const { verified } = useProfileStore()
@@ -63,7 +63,7 @@ const Collab = () => {
 
             {/* Projects Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {projects.map((item) => (
+                {projects.filter((item) => item.type === "public").map((item) => (
                     <div 
                         key={item.id} 
                         className="group bg-zinc-950 border border-zinc-900 rounded-[2rem] p-6 hover:border-blue-500/50 transition-all duration-500 relative overflow-hidden"
